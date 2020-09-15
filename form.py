@@ -4,7 +4,6 @@ from fpdf import FPDF
 
 # from PIL import ImageTk,Image
 
-#PIZZAAAAAAAA
 root = Tk()
 root.geometry("900x700")
 root.title("AeroMexico Report")
