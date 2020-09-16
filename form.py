@@ -1,6 +1,6 @@
 from tkinter import *
 from datetime import date
-from fpdf import FPDF
+#from fpdf import FPDF
 
 # from PIL import ImageTk,Image
 
@@ -9,7 +9,16 @@ root.geometry("900x700")
 root.title("AeroMexico Report")
 # root.iconbitmap("C:/Users/gerge/Desktop/Python/CODEMY/TKINTER/aeromexico-logo.png")
 
-# Button Functions
+
+
+resultPAXOB = IntVar()
+totalOB = Label(root, textvariable=resultPAXOB)
+
+    # Put trace callbacks on the Entry DoubleVars
+def addTOB(name, index, mode):
+    resultPAXOB.set(zoneAA.get() + zoneAC.get() + zoneAI.get() + zoneBA.get() + zoneBC.get() + zoneBI.get() + zoneCA.get() + zoneCC.get() + zoneCI.get())
+
+#Button Functions
 
 def addLine():
     container_list.append(Entry(root))
@@ -280,7 +289,6 @@ zoneBI = IntVar()
 zoneCA = IntVar()
 zoneCC = IntVar()
 zoneCI = IntVar()
-# totalOb = Label(text=zoneAA_entry.get() + zoneAC_entry.get() + zoneAI_entry.get() + zoneBA_entry.get() + zoneBC_entry.get() + zoneBI_entry.get() + zoneCA_entry.get() + zoneCC_entry.get() + zoneCI_entry.get())
 lirEdno = StringVar()
 totalXqInAke = StringVar()  # here comes the totl bags in AKE formula
 # Lists
@@ -436,7 +444,7 @@ zoneBI_entry.grid(row=11, column=3)
 zoneCA_entry.grid(row=12, column=1)
 zoneCC_entry.grid(row=12, column=2)
 zoneCI_entry.grid(row=12, column=3)
-# totalOb.grid(row=13, column=1)
+totalOB.grid(row=13, column=1)
 
 lirEdno_entry.grid(row=15, column=1)
 total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
@@ -513,4 +521,25 @@ sendButton.grid(row=28, column=1)
 saveButton.grid(row=28, column=3)
 exitButton.grid(row=28, column=7)
 
+####################################################
+zoneAA.trace("w", addTOB)
+zoneAC.trace("w", addTOB)
+zoneAI.trace("w", addTOB)
+zoneBA.trace("w", addTOB)
+zoneBC.trace("w", addTOB)
+zoneBI.trace("w", addTOB)
+zoneCA.trace("w", addTOB)
+zoneCC.trace("w", addTOB)
+zoneCI.trace("w", addTOB)
+
+zoneAA.set(0)
+zoneAC.set(0)
+zoneAI.set(0)
+zoneBA.set(0)
+zoneBC.set(0)
+zoneBI.set(0)
+zoneCA.set(0)
+zoneCC.set(0)
+zoneCI.set(0)
+##########################################################
 root.mainloop()
