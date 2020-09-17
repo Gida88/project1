@@ -9,14 +9,32 @@ root.geometry("900x700")
 root.title("AeroMexico Report")
 # root.iconbitmap("C:/Users/gerge/Desktop/Python/CODEMY/TKINTER/aeromexico-logo.png")
 
+#Dropdown for Report Type
+
+def showReportType():
+    repType = Label(root, text=reportType.get())
+
+reportTypeOptions = [
+    "Preliminary",
+    "Final"
+]
+
+reportType = StringVar()
+reportType.set(reportTypeOptions[0])
+
+reportTypeDrop = OptionMenu(root, reportType, *reportTypeOptions)
+reportTypeDrop.grid(row=2, column=1, sticky="w")
 
 
+#auto counter for all passanger on board
 resultPAXOB = IntVar()
 totalOB = Label(root, textvariable=resultPAXOB)
 
-    # Put trace callbacks on the Entry DoubleVars
+# Put trace callbacks on the Entry DoubleVars
 def addTOB(name, index, mode):
     resultPAXOB.set(zoneAA.get() + zoneAC.get() + zoneAI.get() + zoneBA.get() + zoneBC.get() + zoneBI.get() + zoneCA.get() + zoneCC.get() + zoneCI.get())
+
+
 
 #Button Functions
 
@@ -227,7 +245,7 @@ exitButton = Button(root, text="EXIT", command=root.quit)
 title.grid(row=0, column=0)
 subTitle.grid(row=1, column=0)
 reportType.grid(row=2, column=0, sticky=W)
-reportType_entry.grid(row=2, column=1, sticky=W)
+#reportType_entry.grid(row=2, column=1, sticky=W)
 date_text.grid(row=3, column=0, sticky=W)
 today_text.grid(row=3, column=1, sticky=W)
 flightNunber_text.grid(row=2, column=2, sticky=W)
@@ -532,14 +550,7 @@ zoneCA.trace("w", addTOB)
 zoneCC.trace("w", addTOB)
 zoneCI.trace("w", addTOB)
 
-zoneAA.set(0)
-zoneAC.set(0)
-zoneAI.set(0)
-zoneBA.set(0)
-zoneBC.set(0)
-zoneBI.set(0)
-zoneCA.set(0)
-zoneCC.set(0)
-zoneCI.set(0)
+
+
 ##########################################################
 root.mainloop()
