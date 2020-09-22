@@ -1,5 +1,6 @@
 from tkinter import *
 from datetime import date
+from tkinter import messagebox
 #from fpdf import FPDF
 
 # from PIL import ImageTk,Image
@@ -36,8 +37,17 @@ def addTOB(name, index, mode):
     resultPAXOB.set(zoneAA.get() + zoneAC.get() + zoneAI.get() + zoneBA.get() + zoneBC.get() + zoneBI.get() + zoneCA.get() + zoneCC.get() + zoneCI.get())
 
 
+# Data Validation Functions
 
-#Button Functions
+def only_numbers(input):
+    if input.isdigit():
+        return True
+    elif input == "":
+        return True
+    else:
+        return False
+
+# Button Functions
 
 def addLine():
     container_list.append(Entry(root))
@@ -49,6 +59,7 @@ def addLine():
     container_list[index].grid(row=row_index, column=0)
     position_list[index].grid(row=row_index, column=1)
     number_of_xq_list[index].grid(row=row_index, column=2)
+    number_of_xq_list[index].config(validate="key", validatecommand=(reg, "%P"))
     type_xq_list[index].grid(row=row_index, column=3)
     add_button.grid(row=row_index, column=4)
     remove_button.grid(row=row_index, column=5)
@@ -76,7 +87,11 @@ def removeLine():
         add_button['state'] = NORMAL
 
 def save():
-    # We have to add an if clause that gives a pop up message when the types of data entered in the entry fields are not correct
+    for a in number_of_xq_list:  # We have to add an if clause that gives a pop up message when the types of data entered in the entry fields are not correct
+        try:
+            int(a.get())
+        except ValueError:
+            messagebox.showwarning("Invalid Data", "Number of Bags can only contain numbers")
     total_number_of_xq = 0  # This is one of the variables where we will store the totals we need from the entry fields, so we can use them on the PDF file
     for entries in number_of_xq_list:
         total_number_of_xq += int(entries.get())
@@ -200,6 +215,8 @@ def save():
 today = date.today()
 today_string = today.strftime('%Y-%m-%d')
 
+reg = root.register(only_numbers)
+
 title = Label(root, text="AEROMEXICO")
 subTitle = Label(root, text="REPORT")
 
@@ -255,7 +272,7 @@ add_button = Button(root, text="+", fg="green", command=addLine)
 remove_button = Button(root, text="-", fg="red", command=removeLine, state=DISABLED)
 
 sendButton = Button(root, text="SEND", padx=50, pady=5)
-saveButton = Button(root, text="SAVE", padx=50, pady=5)
+saveButton = Button(root, text="SAVE", padx=50, pady=5, command=save)
 exitButton = Button(root, text="EXIT", padx=50, pady=5,command=root.quit)
 
 ###################################################################xx
@@ -394,19 +411,29 @@ flight_number_entry = Entry(textvariable=flightNumber)
 jClass_entry = Entry(textvariable=jClass)
 yClass_entry = Entry(textvariable=yClass)
 zoneAA_entry = Entry(textvariable=zoneAA, width=5)
+zoneAA_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneAC_entry = Entry(textvariable=zoneAC, width=5)
+zoneAA_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneAI_entry = Entry(textvariable=zoneAI, width=5)
+zoneAI_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneBA_entry = Entry(textvariable=zoneBA, width=5)
+zoneBA_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneBC_entry = Entry(textvariable=zoneBC, width=5)
+zoneBC_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneBI_entry = Entry(textvariable=zoneBI, width=5)
+zoneBI_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneCA_entry = Entry(textvariable=zoneCA, width=5)
+zoneCA_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneCC_entry = Entry(textvariable=zoneCC, width=5)
+zoneCC_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneCI_entry = Entry(textvariable=zoneCI, width=5)
+zoneCI_entry.config(validate="key", validatecommand=(reg, "%P"))
 lirEdno_entry = Entry(textvariable=lirEdno)
 
 container_list.append(Entry(textvariable=container))
 position_list.append(Entry(textvariable=position))
 number_of_xq_list.append(Entry(textvariable=number_of_xq))
+number_of_xq_list[0].config(validate="key", validatecommand=(reg, "%P"))
 type_xq_list.append(Entry(textvariable=type_xq))
 
 """container1_entry = Entry(textvariable=container)
@@ -547,10 +574,6 @@ runwayCondition_entry.grid(row=16, column=7)
 fuel_entry.grid(row=17, column=7)
 damagedBags_entry.grid(row=18, column=7)
 remarks_entry.grid(row=19, column=7)
-
-#for q in number_of_xq_list:
-#    number_of_xq_list[q].trace("w", sum_AKE)
-number_of_xq.trace("w", sum_AKE)
 
 # Button Placement
 
