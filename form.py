@@ -202,13 +202,14 @@ def save():
     pdf.cell(0, 5, txt = " " +"FUEL                     "+fuel_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"DAMAGED BAGS       "+damaged_bags_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"REMARKS             "+remarks_info+" ", ln=1, align="L")
-    #pdf.output("" + reportTypeDrop + "_" + flight_nunber_info + ".pdf")
+    pdf.output(""  + "_" + flight_nunber_info + ".pdf")
 
     #reportType_entry.delete(0, END)
     #date_entry.delete(0, END)
     crew_entry.delete(0, END)
     aircraftType_entry.delete(0, END)
     registration_entry.delete(0, END)
+    messagebox.showinfo("Document Saved", "Your document has been saved successfully")
 
 ##################################################################################x
 
