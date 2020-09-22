@@ -1,7 +1,7 @@
 from tkinter import *
 from datetime import date
 from tkinter import messagebox
-#from fpdf import FPDF
+from fpdf import FPDF
 
 # from PIL import ImageTk,Image
 
@@ -85,7 +85,7 @@ def removeLine():
         remove_button['state'] = DISABLED
     elif index > 0:
         add_button['state'] = NORMAL
-
+"""
 def save():
     for a in number_of_xq_list:  # We have to add an if clause that gives a pop up message when the types of data entered in the entry fields are not correct
         try:
@@ -94,7 +94,7 @@ def save():
             messagebox.showwarning("Invalid Data", "Number of Bags can only contain numbers")
     total_number_of_xq = 0  # This is one of the variables where we will store the totals we need from the entry fields, so we can use them on the PDF file
     for entries in number_of_xq_list:
-        total_number_of_xq += int(entries.get())
+        total_number_of_xq += int(entries.get())"""
 
 # Sum Total Functions
 result_AKE = IntVar()
@@ -110,7 +110,7 @@ def sum_AKE(number_of_xq):
 """def send():
     #fill it up later
 
-################################################################xxx
+################################################################xxx"""
 
 def save():
     #def save_info():
@@ -120,10 +120,10 @@ def save():
     crew_info = crew.get()
     aircraftType_info = aircraftType.get()
     registration_info = registration.get()
-    flight_nunber_info = flight_number.get()
+    flight_nunber_info = flightNumber.get()
     route_info = route.get()
-    j_class_info = j_class.get()
-    y_class_info = y_class.get()
+    j_class_info = jClass.get()
+    y_class_info = yClass.get()
 
     zoneAA_info = zoneAA.get()
     zoneAC_info = zoneAC.get()
@@ -136,7 +136,7 @@ def save():
     zoneCI_info = zoneCI.get()
     #total_info = total.get()  # hre comes the total ob formula
 
-    lir_edno_info = lir_edno.get()
+    lir_edno_info = lirEdno.get()
     total_xq_in_ake_info = total_xq_in_ake.get()
 
     container_info = registration.get()
@@ -146,19 +146,19 @@ def save():
 
     stroller_info = stroller.get()
     wchr_info = wchr.get()
-    local_bag_info = local_bag.get()
-    transfer_bag_info = transfer_bag.get()
-    priority_bag_info = priority_bag.get()
-    total_bulk_bag_info = total_bulk_bag.get()
-    total_bags_ob_info = total_bags_ob.get()
-    total_bag_weight_info = total_bag_weight.get()
+    local_bag_info = localBag.get()
+    transfer_bag_info = transferBag.get()
+    priority_bag_info = priorityBag.get()
+    total_bulk_bag_info = totalBulkBag.get()
+    total_bags_ob_info = totalBagsOb.get()
+    total_bag_weight_info = totalBagWeight.get()
     captain_info = captain.get()
     h2o_info = h2o.get()
-    flightplan_info = flight_plan.get()
+    flightplan_info = flightPlan.get()
     runway_info = runway.get()
-    runway_condition_info = runway_condition.get()
+    runway_condition_info = runwayCondition.get()
     fuel_info = fuel.get()
-    damaged_bags_info = damaged_bags.get()
+    damaged_bags_info = damagedBags.get()
     remarks_info = remarks.get()
 
 
@@ -167,7 +167,7 @@ def save():
     pdf.add_page()
     pdf.set_font("Arial",size=15)
     #pdf.cell(0, 5, txt = " " +reportType_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"DATE        " +today+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"DATE        " +today_string+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"CREW       "+crew_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"A/C TYPE  "+aircraftType_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"REG         "+registration_info+" ", ln=1, align="L")
@@ -176,9 +176,9 @@ def save():
     pdf.cell(0, 5, txt = " " , ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"J "+j_class_info+" Y "+y_class_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"AREA    "+"  "+"ADULT"+"  "+"CHILD"+"  "+"INFANT", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"ZONE A  "+"  "+zoneAA_info+"            "+zoneAC_info+"         "+zoneAI_info+" ", ln=1, align="L")   # align in table form
-    pdf.cell(0, 5, txt = " " +"ZONE B  "+"  "+zoneBA_info+"            "+zoneBC_info+"         "+zoneBI_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"ZONE C  "+"  "+zoneCA_info+"            "+zoneCC_info+"         "+zoneCI_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"ZONE A  "+"  "+str(zoneAA_info)+"            "+str(zoneAC_info)+"         "+str(zoneAI_info)+" ", ln=1, align="L")   # align in table form
+    pdf.cell(0, 5, txt = " " +"ZONE B  "+"  "+str(zoneBA_info)+"            "+str(zoneBC_info)+"         "+str(zoneBI_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"ZONE C  "+"  "+str(zoneCA_info)+"            "+str(zoneCC_info)+"         "+str(zoneCI_info)+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " , ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"LIR "+lir_edno_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"TOTAL BAGS IN AKEs "+total_xq_in_ake_info+" ", ln=1, align="L")
@@ -202,18 +202,18 @@ def save():
     pdf.cell(0, 5, txt = " " +"FUEL                     "+fuel_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"DAMAGED BAGS       "+damaged_bags_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"REMARKS             "+remarks_info+" ", ln=1, align="L")
-    pdf.output("" + reportType_info + "_" + flight_nunber_info + ".pdf") 
+    #pdf.output("" + reportTypeDrop + "_" + flight_nunber_info + ".pdf")
 
     #reportType_entry.delete(0, END)
-    date_entry.delete(0, END)
+    #date_entry.delete(0, END)
     crew_entry.delete(0, END)
     aircraftType_entry.delete(0, END)
-    registration_entry.delete(0, END)"""
+    registration_entry.delete(0, END)
 
 ##################################################################################x
 
 today = date.today()
-today_string = today.strftime('%Y-%m-%d')
+today_string = today.strftime("%Y/%m/%d")
 
 reg = root.register(only_numbers)
 
