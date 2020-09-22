@@ -15,6 +15,7 @@ def showReportType():
     repType = Label(root, text=reportType.get())
 
 reportTypeOptions = [
+    "(select)",
     "Preliminary",
     "Final"
 ]
@@ -24,7 +25,7 @@ reportType.set(reportTypeOptions[0])
 
 reportTypeDrop = OptionMenu(root, reportType, *reportTypeOptions)
 reportTypeDrop.grid(row=2, column=1, sticky="w")
-
+reportTypeDrop.config(width=10)
 
 #auto counter for all passanger on board
 resultPAXOB = IntVar()
@@ -73,6 +74,23 @@ def removeLine():
         remove_button['state'] = DISABLED
     elif index > 0:
         add_button['state'] = NORMAL
+
+def save():
+    # We have to add an if clause that gives a pop up message when the types of data entered in the entry fields are not correct
+    total_number_of_xq = 0  # This is one of the variables where we will store the totals we need from the entry fields, so we can use them on the PDF file
+    for entries in number_of_xq_list:
+        total_number_of_xq += int(entries.get())
+
+# Sum Total Functions
+result_AKE = IntVar()
+total_AKE = Label(root, textvariable=result_AKE)
+total_AKE.grid(row=16, column=3)
+
+def sum_AKE(number_of_xq):
+    total_AKE = number_of_xq.get()
+    result_AKE.set(total_AKE)
+
+
 
 """def send():
     #fill it up later
@@ -206,7 +224,7 @@ infant_text = Label(text="INFANT", )
 lirEdno_text = Label(text="LIR EDNO", )
 xqContainerMessage_text = Label(text="BAGGAGE CONTAINER MESSAGE", )  # + icon to add new line for AKE if needed
 totalXqInAke_text = Label(text="TOTAL BAGS IN AKE", )
-container_text = Label(text="CONTAINER", )
+container_text = Label(text="CONTAINER")
 position_text = Label(text="POSITION", )
 nunmberOfXq_text = Label(text="NUMBER OF BAGS", )
 typeXq_text = Label(text="TYPE", )
@@ -238,7 +256,7 @@ remove_button = Button(root, text="-", fg="red", command=removeLine, state=DISAB
 
 sendButton = Button(root, text="SEND", padx=50, pady=5)
 saveButton = Button(root, text="SAVE", padx=50, pady=5)
-exitButton = Button(root, text="EXIT", command=root.quit)
+exitButton = Button(root, text="EXIT", padx=50, pady=5,command=root.quit)
 
 ###################################################################xx
 
@@ -266,11 +284,11 @@ infant_text.grid(row=9, column=3)
 lirEdno_text.grid(row=15, column=0, sticky=W)
 xqContainerMessage_text.grid(row=16, column=0, columnspan=2, sticky=W)
 totalXqInAke_text.grid(row=16, column=2, sticky=W)
-container_text.grid(row=18, column=0, sticky=W)
-position_text.grid(row=18, column=1, sticky=W)
-nunmberOfXq_text.grid(row=18, column=2, sticky=W)
-typeXq_text.grid(row=18, column=3, sticky=W)
-bulk_text.grid(row=2, column=6, padx = 20, sticky=W)
+container_text.grid(row=18, column=0)
+position_text.grid(row=18, column=1)
+nunmberOfXq_text.grid(row=18, column=2)
+typeXq_text.grid(row=18, column=3)
+bulk_text.grid(row=2, column=6, padx = 20, columnspan=2)
 stroller_text.grid(row=3, column=6, padx = 20, sticky=W)
 wchr_text.grid(row=4, column=6, padx = 20, sticky=W)
 localBag_text.grid(row=5, column=6, padx = 20, sticky=W)
@@ -529,6 +547,10 @@ runwayCondition_entry.grid(row=16, column=7)
 fuel_entry.grid(row=17, column=7)
 damagedBags_entry.grid(row=18, column=7)
 remarks_entry.grid(row=19, column=7)
+
+#for q in number_of_xq_list:
+#    number_of_xq_list[q].trace("w", sum_AKE)
+number_of_xq.trace("w", sum_AKE)
 
 # Button Placement
 
