@@ -3,12 +3,18 @@ from datetime import date
 from tkinter import messagebox
 from fpdf import FPDF
 from tkinter import filedialog
+import os
+from PIL import ImageTk,Image
 
-# from PIL import ImageTk,Image
+directory_name = os.path.dirname("project1")
+current_dir = os.path.join(directory_name, "Images", "AeroMexico.ico")
+current_dir2 = os.path.join(directory_name, "Images", "aeromexico-vector-logo.png")
 
 root = Tk()
 root.geometry("900x700")
 root.title("AeroMexico Report")
+
+root.iconbitmap(current_dir)
 # root.iconbitmap("C:/Users/gerge/Desktop/Python/CODEMY/TKINTER/aeromexico-logo.png")
 
 #Dropdown for Report Type
@@ -215,11 +221,23 @@ def save():
 
 ##################################################################################
 
+
+
 today = date.today()
 today_string = today.strftime("%Y/%m/%d")
 
 reg = root.register(only_numbers)
 
+##################################################################################
+
+
+# LABEL/BUTTON CREATION
+
+
+# Labels
+
+my_img = ImageTk.PhotoImage(Image.open(current_dir2))
+title_image = Label(root, image=my_img)
 title = Label(root, text="AEROMEXICO")
 subTitle = Label(root, text="REPORT")
 
@@ -267,6 +285,8 @@ fuel_text = Label(text="FINAL FUEL", )
 damagedBags_text = Label(text="DAMAGED BAG", )
 remarks_text = Label(text="REMARKS", )
 
+# Entries
+
 reportType_entry = Entry(root, width=20, borderwidth=3)
 
 # Buttons
@@ -278,10 +298,17 @@ sendButton = Button(root, text="SEND", padx=50, pady=5)
 saveButton = Button(root, text="SAVE", padx=50, pady=5, command=save)
 exitButton = Button(root, text="EXIT", padx=50, pady=5,command=root.quit)
 
-###################################################################xx
+##################################################################################
 
-title.grid(row=0, column=0)
-subTitle.grid(row=1, column=0)
+
+# PLACEMENT
+
+
+# Labels
+
+title_image.grid(row=0, column=0, columnspan=2)
+#title.grid(row=0, column=1)
+#subTitle.grid(row=1, column=1)
 reportType.grid(row=2, column=0, sticky=W)
 #reportType_entry.grid(row=2, column=1, sticky=W)
 date_text.grid(row=3, column=0, sticky=W)
@@ -326,7 +353,7 @@ fuel_text.grid(row=17, column=6, padx = 20, sticky=W)
 damagedBags_text.grid(row=18, column=6, padx = 20, sticky=W)
 remarks_text.grid(row=19, column=6, padx = 20, sticky=W)
 
-#########################################################################
+##################################################################################
 
 
 crew = StringVar()
