@@ -2,6 +2,7 @@ from tkinter import *
 from datetime import date
 from tkinter import messagebox
 from fpdf import FPDF
+from tkinter import filedialog
 
 # from PIL import ImageTk,Image
 
@@ -116,6 +117,7 @@ def save():
     #def save_info():
     #reportType_info = reportTypeDrop.get()  #fix 'OptionMenu' object has no attribute 'get'
     #date_info = today.get()    # fix date for print
+    directory = filedialog.asksaveasfilename(parent=root) # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
 
     crew_info = crew.get()
     aircraftType_info = aircraftType.get()
@@ -202,7 +204,7 @@ def save():
     pdf.cell(0, 5, txt = " " +"FUEL                     "+fuel_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"DAMAGED BAGS       "+damaged_bags_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"REMARKS             "+remarks_info+" ", ln=1, align="L")
-    pdf.output(""  + "_" + flight_nunber_info + ".pdf")
+    pdf.output(directory + "_" + flight_nunber_info + ".pdf", "F")
 
     #reportType_entry.delete(0, END)
     #date_entry.delete(0, END)
@@ -211,7 +213,7 @@ def save():
     registration_entry.delete(0, END)
     messagebox.showinfo("Document Saved", "Your document has been saved successfully")
 
-##################################################################################x
+##################################################################################
 
 today = date.today()
 today_string = today.strftime("%Y/%m/%d")
