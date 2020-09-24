@@ -3,6 +3,7 @@ from datetime import date
 from tkinter import messagebox
 from fpdf import FPDF
 from tkinter import filedialog
+from tkinter import scrolledtext
 import os
 from PIL import ImageTk,Image
 
@@ -17,27 +18,22 @@ root.title("AeroMexico Report")
 root.iconbitmap(current_dir)
 # root.iconbitmap("C:/Users/gerge/Desktop/Python/CODEMY/TKINTER/aeromexico-logo.png")
 
+# DEFINING FUNCTIONS
+
 #Dropdown for Report Type
 
 def showReportType():
     repType = Label(root, text=reportType.get())
 
 reportTypeOptions = [
-    "(select)",
     "Preliminary",
     "Final"
 ]
 
 reportType = StringVar()
-reportType.set(reportTypeOptions[0])
+reportType.set("(select)")
 
-reportTypeDrop = OptionMenu(root, reportType, *reportTypeOptions)
-reportTypeDrop.grid(row=2, column=1, sticky="w")
-reportTypeDrop.config(width=10)
 
-#auto counter for all passanger on board
-resultPAXOB = IntVar()
-totalOB = Label(root, textvariable=resultPAXOB)
 
 # Put trace callbacks on the Entry DoubleVars
 def addTOB(name, index, mode):
@@ -57,12 +53,12 @@ def only_numbers(input):
 # Button Functions
 
 def addLine():
-    container_list.append(Entry(root))
-    position_list.append(Entry(root))
-    number_of_xq_list.append(Entry(root))
-    type_xq_list.append(Entry(root))
+    container_list.append(Entry(bags_frame, width=15))
+    position_list.append(Entry(bags_frame, width=15))
+    number_of_xq_list.append(Entry(bags_frame, width=15))
+    type_xq_list.append(Entry(bags_frame, width=15))
     index = len(container_list)-1
-    row_index = len(container_list)+18
+    row_index = len(container_list)+3
     container_list[index].grid(row=row_index, column=0)
     position_list[index].grid(row=row_index, column=1)
     number_of_xq_list[index].grid(row=row_index, column=2)
@@ -77,7 +73,7 @@ def addLine():
 
 def removeLine():
     index = len(container_list)-1
-    row_index = len(container_list)+18
+    row_index = len(container_list)+3
     container_list[index].grid_forget()
     position_list[index].grid_forget()
     number_of_xq_list[index].grid_forget()
@@ -104,9 +100,6 @@ def save():
         total_number_of_xq += int(entries.get())"""
 
 # Sum Total Functions
-result_AKE = IntVar()
-total_AKE = Label(root, textvariable=result_AKE)
-total_AKE.grid(row=16, column=3)
 
 def sum_AKE(number_of_xq):
     total_AKE = number_of_xq.get()
@@ -221,141 +214,14 @@ def save():
 
 ##################################################################################
 
-
+# VARIABLE CREATION
 
 today = date.today()
 today_string = today.strftime("%Y/%m/%d")
 
 reg = root.register(only_numbers)
 
-##################################################################################
-
-
-# LABEL/BUTTON CREATION
-
-
-# Labels
-
 my_img = ImageTk.PhotoImage(Image.open(current_dir2))
-title_image = Label(root, image=my_img)
-title = Label(root, text="AEROMEXICO")
-subTitle = Label(root, text="REPORT")
-
-reportType = Label(root, text="REPORT TYPE")  # dropdown menu
-date_text = Label(root, text="Date")
-today_text = Label(root, text=today)
-crew_text = Label(text="Crew", )  # two different box and fomrat after
-aircraftType_text = Label(text="A/C type", )  # flight number/route/reg connect together
-flightNunber_text = Label(text="Flight Number", )  # flight number with search engine //
-route_text = Label(text="Route", )  #
-registration_text = Label(text="Registration", )  #
-jClass_text = Label(text="J", )
-yClasst_text = Label(text="Y", )
-area_text = Label(text="AREA", )
-zoneA_text = Label(text="ZONE A", )
-zoneB_text = Label(text="ZONE B", )
-zoneC_text = Label(text="ZONE C", )
-total_text = Label(text="TOTAL", )
-adult_text = Label(text="ADULT", )
-child_text = Label(text="CHILD", )
-infant_text = Label(text="INFANT", )
-lirEdno_text = Label(text="LIR EDNO", )
-xqContainerMessage_text = Label(text="BAGGAGE CONTAINER MESSAGE", )  # + icon to add new line for AKE if needed
-totalXqInAke_text = Label(text="TOTAL BAGS IN AKE", )
-container_text = Label(text="CONTAINER")
-position_text = Label(text="POSITION", )
-nunmberOfXq_text = Label(text="NUMBER OF BAGS", )
-typeXq_text = Label(text="TYPE", )
-verticalSpace1 = Label(root, text="   ")
-bulk_text = Label(text="BULK", )
-stroller_text = Label(text="STROLLER", )
-wchr_text = Label(text="WCHR", )
-localBag_text = Label(text="LOCAL BAG", )
-transferBag_text = Label(text="TRANSFER BAG", )
-priorityBag_text = Label(text="PRIORITY BAG", )
-totalBulkBag_text = Label(text="TOTAL BAGS IN BULK", )
-totalBagsOb_text = Label(text="TOTAL BAGS ON BOARD", )
-totalBagWeight_text = Label(text="TOTAL WEIGHT OF BAGS", )
-captain_text = Label(text="CAP", )
-h2o_text = Label(text="H2O", )
-flightPlan_text = Label(text="FLIGHT PLAN", )
-runway_text = Label(text="TAKE OFF RUNWAY", )
-runwayCondition_text = Label(text="RUNWAY CONDITION", )
-fuel_text = Label(text="FINAL FUEL", )
-damagedBags_text = Label(text="DAMAGED BAG", )
-remarks_text = Label(text="REMARKS", )
-
-# Entries
-
-reportType_entry = Entry(root, width=20, borderwidth=3)
-
-# Buttons
-
-add_button = Button(root, text="+", fg="green", command=addLine)
-remove_button = Button(root, text="-", fg="red", command=removeLine, state=DISABLED)
-
-sendButton = Button(root, text="SEND", padx=50, pady=5)
-saveButton = Button(root, text="SAVE", padx=50, pady=5, command=save)
-exitButton = Button(root, text="EXIT", padx=50, pady=5,command=root.quit)
-
-##################################################################################
-
-
-# PLACEMENT
-
-
-# Labels
-
-title_image.grid(row=0, column=0, columnspan=2)
-#title.grid(row=0, column=1)
-#subTitle.grid(row=1, column=1)
-reportType.grid(row=2, column=0, sticky=W)
-#reportType_entry.grid(row=2, column=1, sticky=W)
-date_text.grid(row=3, column=0, sticky=W)
-today_text.grid(row=3, column=1, sticky=W)
-flightNunber_text.grid(row=2, column=2, sticky=W)
-route_text.grid(row=3, column=2, sticky=W)
-registration_text.grid(row=4, column=2, sticky=W)
-aircraftType_text.grid(row=5, column=2, sticky=W)
-crew_text.grid(row=6, column=2, sticky=W)
-jClass_text.grid(row=8, column=0, sticky=W)
-yClasst_text.grid(row=8, column=2, sticky=W)
-area_text.grid(row=9, column=0, sticky=W)
-zoneA_text.grid(row=10, column=0, sticky=W)
-zoneB_text.grid(row=11, column=0, sticky=W)
-zoneC_text.grid(row=12, column=0, sticky=W)
-total_text.grid(row=13, column=0, sticky=W)
-adult_text.grid(row=9, column=1)
-child_text.grid(row=9, column=2)
-infant_text.grid(row=9, column=3)
-lirEdno_text.grid(row=15, column=0, sticky=W)
-xqContainerMessage_text.grid(row=16, column=0, columnspan=2, sticky=W)
-totalXqInAke_text.grid(row=16, column=2, sticky=W)
-container_text.grid(row=18, column=0)
-position_text.grid(row=18, column=1)
-nunmberOfXq_text.grid(row=18, column=2)
-typeXq_text.grid(row=18, column=3)
-bulk_text.grid(row=2, column=6, padx = 20, columnspan=2)
-stroller_text.grid(row=3, column=6, padx = 20, sticky=W)
-wchr_text.grid(row=4, column=6, padx = 20, sticky=W)
-localBag_text.grid(row=5, column=6, padx = 20, sticky=W)
-transferBag_text.grid(row=6, column=6, padx = 20, sticky=W)
-priorityBag_text.grid(row=7, column=6, padx = 20, sticky=W)
-totalBulkBag_text.grid(row=8, column=6, padx = 20, sticky=W)
-totalBagsOb_text.grid(row=9, column=6, padx = 20, sticky=W)
-totalBagWeight_text.grid(row=10, column=6, padx = 20, sticky=W)
-captain_text.grid(row=12, column=6, padx = 20, sticky=W)
-h2o_text.grid(row=13, column=6, padx = 20, sticky=W)
-flightPlan_text.grid(row=14, column=6, padx = 20, sticky=W)
-runway_text.grid(row=15, column=6, padx = 20, sticky=W)
-runwayCondition_text.grid(row=16, column=6, padx = 20, sticky=W)
-fuel_text.grid(row=17, column=6, padx = 20, sticky=W)
-damagedBags_text.grid(row=18, column=6, padx = 20, sticky=W)
-remarks_text.grid(row=19, column=6, padx = 20, sticky=W)
-
-##################################################################################
-
-
 crew = StringVar()
 aircraftType = StringVar()
 registration = StringVar()
@@ -374,11 +240,7 @@ zoneCC = IntVar()
 zoneCI = IntVar()
 lirEdno = StringVar()
 totalXqInAke = StringVar()  # here comes the totl bags in AKE formula
-# Lists
-container_list = []
-position_list =[]
-number_of_xq_list = []
-type_xq_list = []
+resultPAXOB = IntVar()  #auto counter for all passanger on board
 
 container = StringVar()
 position = StringVar()
@@ -412,6 +274,8 @@ type_xq7 = StringVar()
 position8 = StringVar()
 number_of_xq8 = StringVar()
 type_xq8 = StringVar()
+result_AKE = IntVar()
+
 
 stroller = StringVar()
 wchr = StringVar()
@@ -429,103 +293,227 @@ runwayCondition = StringVar()
 fuel = StringVar()
 damagedBags = StringVar()
 remarks = StringVar()
-####################################################################
-
-#
-
-crew_entry = Entry(textvariable=crew)
-aircraftType_entry = Entry(textvariable=aircraftType)
-registration_entry = Entry(textvariable=registration)
-route_entry = Entry(textvariable=route)
-flight_number_entry = Entry(textvariable=flightNumber)
-jClass_entry = Entry(textvariable=jClass)
-yClass_entry = Entry(textvariable=yClass)
-zoneAA_entry = Entry(textvariable=zoneAA, width=5)
-zoneAA_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneAC_entry = Entry(textvariable=zoneAC, width=5)
-zoneAA_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneAI_entry = Entry(textvariable=zoneAI, width=5)
-zoneAI_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneBA_entry = Entry(textvariable=zoneBA, width=5)
-zoneBA_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneBC_entry = Entry(textvariable=zoneBC, width=5)
-zoneBC_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneBI_entry = Entry(textvariable=zoneBI, width=5)
-zoneBI_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneCA_entry = Entry(textvariable=zoneCA, width=5)
-zoneCA_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneCC_entry = Entry(textvariable=zoneCC, width=5)
-zoneCC_entry.config(validate="key", validatecommand=(reg, "%P"))
-zoneCI_entry = Entry(textvariable=zoneCI, width=5)
-zoneCI_entry.config(validate="key", validatecommand=(reg, "%P"))
-lirEdno_entry = Entry(textvariable=lirEdno)
-
-container_list.append(Entry(textvariable=container))
-position_list.append(Entry(textvariable=position))
-number_of_xq_list.append(Entry(textvariable=number_of_xq))
-number_of_xq_list[0].config(validate="key", validatecommand=(reg, "%P"))
-type_xq_list.append(Entry(textvariable=type_xq))
-
-"""container1_entry = Entry(textvariable=container)
-position1_entry = Entry(textvariable=position)
-number_of_xq1_entry = Entry(textvariable=number_of_xq)
-type_xq1_entry = Entry(textvariable=type_xq)
-container2_entry = Entry(textvariable=container2)
-position2_entry = Entry(textvariable=position2)
-number_of_xq2_entry = Entry(textvariable=number_of_xq2)
-type_xq2_entry = Entry(textvariable=type_xq2)
-container3_entry = Entry(textvariable=container3)
-position3_entry = Entry(textvariable=position3)
-number_of_xq3_entry = Entry(textvariable=number_of_xq3)
-type_xq3_entry = Entry(textvariable=type_xq3)
-container4_entry = Entry(textvariable=container4)
-position4_entry = Entry(textvariable=position4)
-number_of_xq4_entry = Entry(textvariable=number_of_xq4)
-type_xq4_entry = Entry(textvariable=type_xq4)
-container5_entry = Entry(textvariable=container5)
-position5_entry = Entry(textvariable=position5)
-number_of_xq5_entry = Entry(textvariable=number_of_xq5)
-type_xq5_entry = Entry(textvariable=type_xq5)
-container6_entry = Entry(textvariable=container6)
-position6_entry = Entry(textvariable=position6)
-number_of_xq6_entry = Entry(textvariable=number_of_xq6)
-type_xq6_entry = Entry(textvariable=type_xq6)
-container7_entry = Entry(textvariable=container7)
-position7_entry = Entry(textvariable=position7)
-number_of_xq7_entry = Entry(textvariable=number_of_xq7)
-type_xq7_entry = Entry(textvariable=type_xq7)
-8_entry = Entry(textvariable=container8)
-position8_entry = Entry(textvariable=position8)
-number_of_xq8_entry = Entry(textvariable=number_of_xq8)
-type_xq8_entry = Entry(textvariable=type_xq8)"""
-
-stroller_entry = Entry(textvariable=stroller)
-wchr_entry = Entry(textvariable=wchr)
-localBag_entry = Entry(textvariable=localBag)
-transferBag_entry = Entry(textvariable=transferBag)
-priorityBag_entry = Entry(textvariable=priorityBag)
 totalBulkBag = StringVar()  # here comes the total bulk bags
 totalBagsOb = StringVar()  # here comes the total on baord bags
-totalBagWeight_entry = Entry(textvariable=totalBagWeight)
-captain_entry = Entry(textvariable=captain)
-h2o_entry = Entry(textvariable=h2o)
-flightPlan_entry = Entry(textvariable=flightPlan)
-runway_entry = Entry(textvariable=runway)
-runwayCondition_entry = Entry(textvariable=runwayCondition)
-fuel_entry = Entry(textvariable=fuel)
-damagedBags_entry = Entry(textvariable=damagedBags)
-remarks_entry = Entry(textvariable=remarks)
+total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 
-####################################################################
+# Lists
+container_list = []
+position_list =[]
+number_of_xq_list = []
+type_xq_list = []
 
-# Placement on the Grid
+##################################################################################
 
-flight_number_entry.grid(row=2, column=3)
-route_entry.grid(row=3, column=3)
-registration_entry.grid(row=4, column=3)
-aircraftType_entry.grid(row=5, column=3)
-crew_entry.grid(row=6, column=3)
+# WIDGET CREATION
 
+# FRAMES
+
+title_frame = Frame(root, padx=5, pady=5, )
+document_info_frame = LabelFrame(root, text="Document Info",width=620, height=215, padx=20, pady=20)
+#document_info_frame.grid_propagate(0)
+passengers_frame = LabelFrame(root, text="Passengers", width=620, height=215, padx=20, pady=20)
+#passengers_frame.grid_propagate(0)
+
+bags_frame = LabelFrame(root, text="Bags", padx=20, pady=20)
+bulk_frame = LabelFrame(root, text="Bulk", padx=20, pady=20)
+buttons_frame = LabelFrame(root, text="Buttons", padx=20, pady=20)
+
+# TITLE FRAME
+
+# Labels
+title = Label(root, text="AEROMEXICO")
+subTitle = Label(root, text="REPORT")
+title_image = Label(title_frame, image=my_img, borderwidth=0)
+
+# DOCUMENT INFO FRAME
+
+# Labels
+reportType_text = Label(document_info_frame, text="Report Type")  # dropdown menu
+date_text = Label(document_info_frame, text="Date")
+today_text = Label(document_info_frame, text=today)
+reportTypeDrop = OptionMenu(document_info_frame, reportType, *reportTypeOptions)
+flightNumber_text = Label(document_info_frame, text="Flight Number", )  # flight number with search engine //
+route_text = Label(document_info_frame, text="Route", )  #
+registration_text = Label(document_info_frame, text="Registration", )  #
+aircraftType_text = Label(document_info_frame, text="A/C type", )  # flight number/route/reg connect together
+crew_text = Label(document_info_frame, text="Crew", )  # two different box and fomrat after
+
+# Entries
+flight_number_entry = Entry(document_info_frame, textvariable=flightNumber)
+route_entry = Entry(document_info_frame, textvariable=route)
+registration_entry = Entry(document_info_frame, textvariable=registration)
+aircraftType_entry = Entry(document_info_frame, textvariable=aircraftType)
+crew_entry = Entry(document_info_frame, textvariable=crew)
+
+# PASSENGERS FRAME
+
+# Labels
+jClass_text = Label(passengers_frame, text="J", )
+yClasst_text = Label(passengers_frame, text="Y", )
+area_text = Label(passengers_frame, text="AREA", )
+zoneA_text = Label(passengers_frame, text="ZONE A", )
+zoneB_text = Label(passengers_frame, text="ZONE B", )
+zoneC_text = Label(passengers_frame, text="ZONE C", )
+total_text = Label(passengers_frame, text="TOTAL", )
+adult_text = Label(passengers_frame, text="ADULT", )
+child_text = Label(passengers_frame, text="CHILD", )
+infant_text = Label(passengers_frame, text="INFANT", )
+totalOB = Label(passengers_frame, textvariable=resultPAXOB)
+
+# Entries
+jClass_entry = Entry(passengers_frame, textvariable=jClass)
+yClass_entry = Entry(passengers_frame, textvariable=yClass)
+zoneAA_entry = Entry(passengers_frame, textvariable=zoneAA, width=5, justify="center")
+zoneAA_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneAC_entry = Entry(passengers_frame, textvariable=zoneAC, width=5, justify="center")
+zoneAC_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneAI_entry = Entry(passengers_frame, textvariable=zoneAI, width=5, justify="center")
+zoneAI_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneBA_entry = Entry(passengers_frame, textvariable=zoneBA, width=5, justify="center")
+zoneBA_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneBC_entry = Entry(passengers_frame, textvariable=zoneBC, width=5, justify="center")
+zoneBC_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneBI_entry = Entry(passengers_frame, textvariable=zoneBI, width=5, justify="center")
+zoneBI_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneCA_entry = Entry(passengers_frame, textvariable=zoneCA, width=5, justify="center")
+zoneCA_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneCC_entry = Entry(passengers_frame, textvariable=zoneCC, width=5, justify="center")
+zoneCC_entry.config(validate="key", validatecommand=(reg, "%P"))
+zoneCI_entry = Entry(passengers_frame, textvariable=zoneCI, width=5, justify="center")
+zoneCI_entry.config(validate="key", validatecommand=(reg, "%P"))
+
+# BAGS FRAME
+
+# Labels
+lirEdno_text = Label(bags_frame, text="LIR EDNO", )
+xqContainerMessage_text = Label(bags_frame, text="BAGGAGE CONTAINER MESSAGE", )  # + icon to add new line for AKE if needed
+totalXqInAke_text = Label(bags_frame, text="TOTAL BAGS IN AKE", )
+container_text = Label(bags_frame, text="CONTAINER")
+position_text = Label(bags_frame, text="POSITION", )
+nunmberOfXq_text = Label(bags_frame, text="NUMBER OF BAGS", )
+typeXq_text = Label(bags_frame, text="TYPE", )
+total_AKE = Label(bags_frame, textvariable=result_AKE)
+
+# Entries
+lirEdno_entry = Entry(bags_frame, textvariable=lirEdno, width=15)
+container_list.append(Entry(bags_frame, textvariable=container, width=15))
+position_list.append(Entry(bags_frame, textvariable=position, width=15))
+number_of_xq_list.append(Entry(bags_frame, textvariable=number_of_xq, width=15))
+number_of_xq_list[0].config(validate="key", validatecommand=(reg, "%P"))
+type_xq_list.append(Entry(bags_frame, textvariable=type_xq, width=15))
+
+# Buttons
+add_button = Button(bags_frame, text="+", fg="green", command=addLine)
+remove_button = Button(bags_frame, text="-", fg="red", command=removeLine, state=DISABLED)
+
+# BULK FRAME
+
+# Labels
+bulk_text = Label(bulk_frame, text="BULK", )
+stroller_text = Label(bulk_frame, text="STROLLER", )
+wchr_text = Label(bulk_frame, text="WCHR", )
+localBag_text = Label(bulk_frame, text="LOCAL BAG", )
+transferBag_text = Label(bulk_frame, text="TRANSFER BAG", )
+priorityBag_text = Label(bulk_frame, text="PRIORITY BAG", )
+totalBulkBag_text = Label(bulk_frame, text="TOTAL BAGS IN BULK", )
+totalBagsOb_text = Label(bulk_frame, text="TOTAL BAGS ON BOARD", )
+totalBagWeight_text = Label(bulk_frame, text="TOTAL WEIGHT OF BAGS", )
+captain_text = Label(bulk_frame, text="CAP", )
+h2o_text = Label(bulk_frame, text="H2O", )
+flightPlan_text = Label(bulk_frame, text="FLIGHT PLAN", )
+runway_text = Label(bulk_frame, text="TAKE OFF RUNWAY", )
+runwayCondition_text = Label(bulk_frame, text="RUNWAY CONDITION", )
+fuel_text = Label(bulk_frame, text="FINAL FUEL", )
+damagedBags_text = Label(bulk_frame, text="DAMAGED BAG", )
+remarks_text = Label(bulk_frame, text="REMARKS", )
+
+# Entries
+stroller_entry = Entry(bulk_frame, textvariable=stroller)
+wchr_entry = Entry(bulk_frame, textvariable=wchr)
+localBag_entry = Entry(bulk_frame, textvariable=localBag)
+transferBag_entry = Entry(bulk_frame, textvariable=transferBag)
+priorityBag_entry = Entry(bulk_frame, textvariable=priorityBag)
+totalBagWeight_entry = Entry(bulk_frame, textvariable=totalBagWeight)
+captain_entry = Entry(bulk_frame, textvariable=captain)
+h2o_entry = Entry(bulk_frame, textvariable=h2o)
+flightPlan_entry = Entry(bulk_frame, textvariable=flightPlan)
+runway_entry = Entry(bulk_frame, textvariable=runway)
+runwayCondition_entry = Entry(bulk_frame, textvariable=runwayCondition)
+fuel_entry = Entry(bulk_frame, textvariable=fuel)
+damagedBags_entry = Entry(bulk_frame, textvariable=damagedBags)
+remarks_entry = scrolledtext.ScrolledText(bulk_frame, relief=SUNKEN, width=24, height=9, borderwidth=1,
+highlightthickness=0, highlightcolor="blue", pady=3)
+
+#remarks_entry = Text(bulk_frame, relief=GROOVE, width=26, height=8, borderwidth=2, highlightthickness=0)
+#remarks_entry = Entry(bulk_frame, textvariable=remarks, )
+
+# BUTTON FRAME
+
+# Buttons
+sendButton = Button(buttons_frame, text="SEND", padx=50, pady=5)
+saveButton = Button(buttons_frame, text="SAVE", padx=50, pady=5, command=save)
+exitButton = Button(buttons_frame, text="EXIT", padx=50, pady=5, command=root.quit)
+
+##################################################################################
+
+
+# PLACEMENT ON THE GRID
+
+# Frames
+
+title_frame.grid(row=0, column=0, sticky=W)
+document_info_frame.grid(row=1, column=0, sticky=W)
+passengers_frame.grid(row=2, column=0, columnspan=2, sticky=W)
+bags_frame.grid(row=3, column=0, sticky=W)
+bulk_frame.grid(row=1, column=1, rowspan=3, sticky=N, padx=20)
+buttons_frame.grid(row=4, column=0, columnspan=3)
+
+# TITLE FRAME
+
+# Labels
+title_image.grid(row=0, column=0, sticky=W)
+#title.grid(row=0, column=1)
+#subTitle.grid(row=1, column=1)
+
+# DOCUMENT INFO FRAME
+
+# Labels
+reportType_text.grid(row=0, column=0, sticky=W)
+date_text.grid(row=1, column=0, sticky=W)
+today_text.grid(row=1, column=1, sticky=W)
+flightNumber_text.grid(row=0, column=2, sticky=W, padx=62)
+route_text.grid(row=1, column=2, sticky=W, padx=62)
+registration_text.grid(row=2, column=2, sticky=W, padx=62)
+aircraftType_text.grid(row=3, column=2, sticky=W, padx=62)
+crew_text.grid(row=4, column=2, sticky=W, padx=62)
+
+# Entries
+flight_number_entry.grid(row=0, column=3)
+route_entry.grid(row=1, column=3)
+registration_entry.grid(row=2, column=3)
+aircraftType_entry.grid(row=3, column=3)
+crew_entry.grid(row=4, column=3)
+
+# Other
+reportTypeDrop.grid(row=0, column=1, sticky="w")
+reportTypeDrop.config(width=10)
+
+# PASSENGER FRAME
+
+# Labels
+jClass_text.grid(row=8, column=0, sticky=W)
+yClasst_text.grid(row=8, column=2, sticky=W, padx=78.5)
+area_text.grid(row=9, column=0, sticky=W)
+zoneA_text.grid(row=10, column=0, sticky=W)
+zoneB_text.grid(row=11, column=0, sticky=W)
+zoneC_text.grid(row=12, column=0, sticky=W)
+total_text.grid(row=13, column=0, sticky=W)
+adult_text.grid(row=9, column=1)
+child_text.grid(row=9, column=2)
+infant_text.grid(row=9, column=3)
+
+# Entries
 jClass_entry.grid(row=8, column=1)
 yClass_entry.grid(row=8, column=3)
 zoneAA_entry.grid(row=10, column=1)
@@ -539,62 +527,56 @@ zoneCC_entry.grid(row=12, column=2)
 zoneCI_entry.grid(row=12, column=3)
 totalOB.grid(row=13, column=1)
 
-lirEdno_entry.grid(row=15, column=1)
-total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
+# BAGS FRAME
 
-container_list[0].grid(row=19, column=0)
-position_list[0].grid(row=19, column=1)
-number_of_xq_list[0].grid(row=19, column=2)
-type_xq_list[0].grid(row=19, column=3)
+# Labels
+lirEdno_text.grid(row=0, column=0, )
+xqContainerMessage_text.grid(row=2, column=0, columnspan=4, pady=20)
+#totalXqInAke_text.grid(row=0, column=2)
+#total_AKE.grid(row=0, column=3)
+container_text.grid(row=3, column=0)
+position_text.grid(row=3, column=1)
+nunmberOfXq_text.grid(row=3, column=2)
+typeXq_text.grid(row=3, column=3)
 
-"""position1_entry.grid(row=19, column=1)
-number_of_xq1_entry.grid(row=19, column=2)  # 1st AKE     # add plus button to create more fields for extra AKEs
-type_xq1_entry.grid(row=19, column=3)
+# Entries
+lirEdno_entry.grid(row=0, column=1, )
+container_list[0].grid(row=4, column=0)
+position_list[0].grid(row=4, column=1)
+number_of_xq_list[0].grid(row=4, column=2)
+type_xq_list[0].grid(row=4, column=3)
 
-container2_entry.grid(row=20, column=0)
-position2_entry.grid(row=20, column=1)
-number_of_xq2_entry.grid(row=20, column=2)  # 2nd AKE
-type_xq2_entry.grid(row=20, column=3)
+# Buttons
+add_button.grid(row=4, column=4)
+remove_button.grid(row=4, column=5)
 
-container3_entry.grid(row=21, column=0)
-position3_entry.grid(row=21, column=1)
-number_of_xq3_entry.grid(row=21, column=2)  # 3rd AKE
-type_xq3_entry.grid(row=21, column=3)
+# BULK FRAME
 
-container4_entry.grid(row=22, column=0)
-position4_entry.grid(row=22, column=1)
-number_of_xq4_entry.grid(row=22, column=2)  # 4th AKE
-type_xq4_entry.grid(row=22, column=3)
+# Labels
+bulk_text.grid(row=2, column=6, padx = 20, columnspan=2)
+stroller_text.grid(row=3, column=6, padx = 20, sticky=W)
+wchr_text.grid(row=4, column=6, padx = 20, sticky=W)
+localBag_text.grid(row=5, column=6, padx = 20, sticky=W)
+transferBag_text.grid(row=6, column=6, padx = 20, sticky=W)
+priorityBag_text.grid(row=7, column=6, padx = 20, sticky=W)
+totalBulkBag_text.grid(row=8, column=6, padx = 20, sticky=W)
+totalBagsOb_text.grid(row=9, column=6, padx = 20, sticky=W)
+totalBagWeight_text.grid(row=10, column=6, padx = 20, sticky=W)
+captain_text.grid(row=12, column=6, padx = 20, sticky=W)
+h2o_text.grid(row=13, column=6, padx = 20, sticky=W)
+flightPlan_text.grid(row=14, column=6, padx = 20, sticky=W)
+runway_text.grid(row=15, column=6, padx = 20, sticky=W)
+runwayCondition_text.grid(row=16, column=6, padx = 20, sticky=W)
+fuel_text.grid(row=17, column=6, padx = 20, sticky=W)
+damagedBags_text.grid(row=18, column=6, padx = 20, sticky=W)
+remarks_text.grid(row=19, column=6, padx = 20, sticky=W)
 
-container5_entry.grid(row=23, column=0)
-position5_entry.grid(row=23, column=1)
-number_of_xq5_entry.grid(row=23, column=2)  # 5th AKE
-type_xq5_entry.grid(row=23, column=3)
-
-container6_entry.grid(row=24, column=0)
-position6_entry.grid(row=24, column=1)
-number_of_xq6_entry.grid(row=24, column=2)  # 6th AKE
-type_xq6_entry.grid(row=24, column=3)
-
-#container7_entry.grid(row=25, column=0)
-position7_entry.grid(row=25, column=1)
-number_of_xq7_entry.grid(row=25, column=2)  # 7th AKE
-type_xq7_entry.grid(row=25, column=3)
-
-#8_entry.grid(row=26, column=0)
-position8_entry.grid(row=26, column=1)  # 8th AKE
-number_of_xq8_entry.grid(row=26, column=2)
-type_xq8_entry.grid(row=26, column=3)"""
-
-verticalSpace1.grid(row=27, column=0)
-
+# Entries
 stroller_entry.grid(row=3, column=7)
 wchr_entry.grid(row=4, column=7)
 localBag_entry.grid(row=5, column=7)
 transferBag_entry.grid(row=6, column=7)
 priorityBag_entry.grid(row=7, column=7)
-totalBulkBag = StringVar()  # here comes the total bulk bags
-totalBagsOb = StringVar()  # here comes the total on baord bags
 totalBagWeight_entry.grid(row=10, column=7)
 captain_entry.grid(row=12, column=7)
 h2o_entry.grid(row=13, column=7)
@@ -603,18 +585,19 @@ runway_entry.grid(row=15, column=7)
 runwayCondition_entry.grid(row=16, column=7)
 fuel_entry.grid(row=17, column=7)
 damagedBags_entry.grid(row=18, column=7)
-remarks_entry.grid(row=19, column=7)
+remarks_entry.grid(row=19, column=7, sticky=E)
 
-# Button Placement
+# BUTTON FRAME
 
-add_button.grid(row=19, column=4)
-remove_button.grid(row=19, column=5)
+# Buttons
+sendButton.grid(row=28, column=1, padx=50)
+saveButton.grid(row=28, column=3, padx=50)
+exitButton.grid(row=28, column=7, padx=50)
 
-sendButton.grid(row=28, column=1)
-saveButton.grid(row=28, column=3)
-exitButton.grid(row=28, column=7)
+####################################################################
 
-####################################################
+# Entry Field Tracing
+
 zoneAA.trace("w", addTOB)
 zoneAC.trace("w", addTOB)
 zoneAI.trace("w", addTOB)
@@ -624,8 +607,6 @@ zoneBI.trace("w", addTOB)
 zoneCA.trace("w", addTOB)
 zoneCC.trace("w", addTOB)
 zoneCI.trace("w", addTOB)
-
-
 
 ##########################################################
 root.mainloop()
