@@ -10,9 +10,12 @@ from PIL import ImageTk,Image
 directory_name = os.path.dirname("project1")
 current_dir = os.path.join(directory_name, "Images", "AeroMexico.ico")
 current_dir2 = os.path.join(directory_name, "Images", "aeromexico-vector-logo.png")
+current_dir3 = os.path.join(directory_name, "Images", "button_send.png")
+current_dir4 = os.path.join(directory_name, "Images", "button_save.png")
+current_dir5 = os.path.join(directory_name, "Images", "button_exit.png")
 
 root = Tk()
-root.geometry("900x700")
+root.geometry("1155x755")
 root.title("AeroMexico Report")
 
 root.iconbitmap(current_dir)
@@ -105,18 +108,17 @@ def sum_AKE(number_of_xq):
     total_AKE = number_of_xq.get()
     result_AKE.set(total_AKE)
 
+# Button Functions
 
-
-"""def send():
+def send():
     #fill it up later
-
-################################################################xxx"""
+    pass
 
 def save():
     #def save_info():
     #reportType_info = reportTypeDrop.get()  #fix 'OptionMenu' object has no attribute 'get'
     #date_info = today.get()    # fix date for print
-    directory = filedialog.asksaveasfilename(parent=root) # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
+    directory = filedialog.asksaveasfilename(parent=root, initialfile=(flightNumber.get()) + " " + (reportType.get()) + " Report" ".pdf")  # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
 
     crew_info = crew.get()
     aircraftType_info = aircraftType.get()
@@ -167,7 +169,7 @@ def save():
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial",size=15)
-    #pdf.cell(0, 5, txt = " " +reportType_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +(reportType.get())+" Report", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"DATE        " +today_string+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"CREW       "+crew_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"A/C TYPE  "+aircraftType_info+" ", ln=1, align="L")
@@ -203,7 +205,7 @@ def save():
     pdf.cell(0, 5, txt = " " +"FUEL                     "+fuel_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"DAMAGED BAGS       "+damaged_bags_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"REMARKS             "+remarks_info+" ", ln=1, align="L")
-    pdf.output(directory + "_" + flight_nunber_info + ".pdf", "F")
+    pdf.output(directory, "F")
 
     #reportType_entry.delete(0, END)
     #date_entry.delete(0, END)
@@ -297,6 +299,9 @@ totalBulkBag = StringVar()  # here comes the total bulk bags
 totalBagsOb = StringVar()  # here comes the total on baord bags
 total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 
+send_button = PhotoImage(file=f"{current_dir3}")
+save_button = PhotoImage(file=f"{current_dir4}")
+exit_button = PhotoImage(file=f"{current_dir5}")
 # Lists
 container_list = []
 position_list =[]
@@ -309,15 +314,15 @@ type_xq_list = []
 
 # FRAMES
 
-title_frame = Frame(root, padx=5, pady=5, )
-document_info_frame = LabelFrame(root, text="Document Info",width=620, height=215, padx=20, pady=20)
+title_frame = Frame(root, padx=5, pady=5)
+document_info_frame = LabelFrame(root, text="Document Info", width=620, height=215, padx=20, pady=20)
 #document_info_frame.grid_propagate(0)
 passengers_frame = LabelFrame(root, text="Passengers", width=620, height=215, padx=20, pady=20)
 #passengers_frame.grid_propagate(0)
-
 bags_frame = LabelFrame(root, text="Bags", padx=20, pady=20)
 bulk_frame = LabelFrame(root, text="Bulk", padx=20, pady=20)
 buttons_frame = LabelFrame(root, text="Buttons", padx=20, pady=20)
+#buttons_frame = Frame(root, padx=20, pady=40, relief=SUNKEN)
 
 # TITLE FRAME
 
@@ -350,7 +355,7 @@ crew_entry = Entry(document_info_frame, textvariable=crew)
 
 # Labels
 jClass_text = Label(passengers_frame, text="J", )
-yClasst_text = Label(passengers_frame, text="Y", )
+yClass_text = Label(passengers_frame, text="Y", )
 area_text = Label(passengers_frame, text="AREA", )
 zoneA_text = Label(passengers_frame, text="ZONE A", )
 zoneB_text = Label(passengers_frame, text="ZONE B", )
@@ -442,7 +447,7 @@ runway_entry = Entry(bulk_frame, textvariable=runway)
 runwayCondition_entry = Entry(bulk_frame, textvariable=runwayCondition)
 fuel_entry = Entry(bulk_frame, textvariable=fuel)
 damagedBags_entry = Entry(bulk_frame, textvariable=damagedBags)
-remarks_entry = scrolledtext.ScrolledText(bulk_frame, relief=SUNKEN, width=24, height=9, borderwidth=1,
+remarks_entry = scrolledtext.ScrolledText(bulk_frame, relief=SUNKEN, width=24, height=11, borderwidth=1,
 highlightthickness=0, highlightcolor="blue", pady=3)
 
 #remarks_entry = Text(bulk_frame, relief=GROOVE, width=26, height=8, borderwidth=2, highlightthickness=0)
@@ -451,9 +456,9 @@ highlightthickness=0, highlightcolor="blue", pady=3)
 # BUTTON FRAME
 
 # Buttons
-sendButton = Button(buttons_frame, text="SEND", padx=50, pady=5)
-saveButton = Button(buttons_frame, text="SAVE", padx=50, pady=5, command=save)
-exitButton = Button(buttons_frame, text="EXIT", padx=50, pady=5, command=root.quit)
+sendButton = Button(buttons_frame, text="SEND", image=send_button, borderwidth=0)
+saveButton = Button(buttons_frame, text="SAVE", command=save, image=save_button, borderwidth=0)
+exitButton = Button(buttons_frame, text="EXIT", command=root.quit, image=exit_button, borderwidth=0)
 
 ##################################################################################
 
@@ -462,10 +467,10 @@ exitButton = Button(buttons_frame, text="EXIT", padx=50, pady=5, command=root.qu
 
 # Frames
 
-title_frame.grid(row=0, column=0, sticky=W)
-document_info_frame.grid(row=1, column=0, sticky=W)
-passengers_frame.grid(row=2, column=0, columnspan=2, sticky=W)
-bags_frame.grid(row=3, column=0, sticky=W)
+title_frame.grid(row=0, column=0, columnspan=3)
+document_info_frame.grid(row=1, column=0, padx=10, sticky=W)
+passengers_frame.grid(row=2, column=0, columnspan=2, padx=10, sticky=W)
+bags_frame.grid(row=3, column=0, padx=10, sticky=W)
 bulk_frame.grid(row=1, column=1, rowspan=3, sticky=N, padx=20)
 buttons_frame.grid(row=4, column=0, columnspan=3)
 
@@ -503,7 +508,7 @@ reportTypeDrop.config(width=10)
 
 # Labels
 jClass_text.grid(row=8, column=0, sticky=W)
-yClasst_text.grid(row=8, column=2, sticky=W, padx=78.5)
+yClass_text.grid(row=8, column=2, sticky=W, padx=78.5)
 area_text.grid(row=9, column=0, sticky=W)
 zoneA_text.grid(row=10, column=0, sticky=W)
 zoneB_text.grid(row=11, column=0, sticky=W)
@@ -553,7 +558,7 @@ remove_button.grid(row=4, column=5)
 # BULK FRAME
 
 # Labels
-bulk_text.grid(row=2, column=6, padx = 20, columnspan=2)
+#bulk_text.grid(row=2, column=6, padx = 20, columnspan=2)
 stroller_text.grid(row=3, column=6, padx = 20, sticky=W)
 wchr_text.grid(row=4, column=6, padx = 20, sticky=W)
 localBag_text.grid(row=5, column=6, padx = 20, sticky=W)
@@ -569,7 +574,7 @@ runway_text.grid(row=15, column=6, padx = 20, sticky=W)
 runwayCondition_text.grid(row=16, column=6, padx = 20, sticky=W)
 fuel_text.grid(row=17, column=6, padx = 20, sticky=W)
 damagedBags_text.grid(row=18, column=6, padx = 20, sticky=W)
-remarks_text.grid(row=19, column=6, padx = 20, sticky=W)
+remarks_text.grid(row=19, column=6, padx = 20, sticky=NW)
 
 # Entries
 stroller_entry.grid(row=3, column=7)
