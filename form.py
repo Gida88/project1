@@ -5,7 +5,7 @@ from fpdf import FPDF
 from tkinter import filedialog
 from tkinter import scrolledtext
 import os
-from PIL import ImageTk,Image
+from PIL import ImageTk, Image
 
 directory_name = os.path.dirname("project1")
 current_dir = os.path.join(directory_name, "Images", "AeroMexico.ico")
@@ -15,7 +15,13 @@ current_dir4 = os.path.join(directory_name, "Images", "button_save.png")
 current_dir5 = os.path.join(directory_name, "Images", "button_exit.png")
 
 root = Tk()
-root.geometry("1155x755")
+#root.geometry("1155x755")
+root.rowconfigure(0, weight=1)
+root.columnconfigure(0, weight=1)
+root.rowconfigure(2, weight=1)
+root.columnconfigure(2, weight=1)
+root.rowconfigure(3, weight=1)
+root.columnconfigure(3, weight=1)
 root.title("AeroMexico Report")
 
 root.iconbitmap(current_dir)
@@ -314,14 +320,15 @@ type_xq_list = []
 
 # FRAMES
 
-title_frame = Frame(root, padx=5, pady=5)
-document_info_frame = LabelFrame(root, text="Document Info", width=620, height=215, padx=20, pady=20)
+contents = Frame(root)
+title_frame = Frame(contents, padx=5, pady=5)
+document_info_frame = LabelFrame(contents, text="Document Info", width=620, height=215, padx=20, pady=20)
 #document_info_frame.grid_propagate(0)
-passengers_frame = LabelFrame(root, text="Passengers", width=620, height=215, padx=20, pady=20)
+passengers_frame = LabelFrame(contents, text="Passengers", width=620, height=215, padx=20, pady=20)
 #passengers_frame.grid_propagate(0)
-bags_frame = LabelFrame(root, text="Bags", padx=20, pady=20)
-bulk_frame = LabelFrame(root, text="Bulk", padx=20, pady=20)
-buttons_frame = LabelFrame(root, text="Buttons", padx=20, pady=20)
+bags_frame = LabelFrame(contents, text="Bags", padx=20, pady=20)
+bulk_frame = LabelFrame(contents, text="Bulk", padx=20, pady=20)
+buttons_frame = LabelFrame(contents, text="Buttons", padx=20, pady=20)
 #buttons_frame = Frame(root, padx=20, pady=40, relief=SUNKEN)
 
 # TITLE FRAME
@@ -467,6 +474,7 @@ exitButton = Button(buttons_frame, text="EXIT", command=root.quit, image=exit_bu
 
 # Frames
 
+contents.grid(row=1, column=1)
 title_frame.grid(row=0, column=0, columnspan=3)
 document_info_frame.grid(row=1, column=0, padx=10, sticky=W)
 passengers_frame.grid(row=2, column=0, columnspan=2, padx=10, sticky=W)
