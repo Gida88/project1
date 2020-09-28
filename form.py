@@ -48,10 +48,14 @@ reportType.set("(select)")
 def addTOB(name, index, mode):
     resultPAXOB.set(zoneAA.get() + zoneAC.get() + zoneAI.get() + zoneBA.get() + zoneBC.get() + zoneBI.get() + zoneCA.get() + zoneCC.get() + zoneCI.get())
 
+def totalBulkBags(name, index, mode):
+    resultBulkBag.set(stroller.get() + wchr.get() + localBag.get() + transferBag.get() + priorityBag.get())
+
 
 # Data Validation Functions
 
 def only_numbers(input):
+
     if input.isdigit():
         return True
     elif input == "":
@@ -285,12 +289,12 @@ type_xq8 = StringVar()
 result_AKE = IntVar()
 
 
-stroller = StringVar()
-wchr = StringVar()
-localBag = StringVar()
-transferBag = StringVar()
-priorityBag = StringVar()
-totalBulkBag = StringVar()  # here comes the total bulk bags
+stroller = IntVar()
+wchr = IntVar()
+localBag = IntVar()
+transferBag = IntVar()
+priorityBag = IntVar()
+resultBulkBag = IntVar()  # here comes the total bulk bags
 totalBagsOb = StringVar()  # here comes the total on board bags
 totalBagWeight = StringVar()
 captain = StringVar()
@@ -301,7 +305,6 @@ runwayCondition = StringVar()
 fuel = StringVar()
 damagedBags = StringVar()
 remarks = StringVar()
-totalBulkBag = StringVar()  # here comes the total bulk bags
 totalBagsOb = StringVar()  # here comes the total on baord bags
 total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 
@@ -429,6 +432,7 @@ localBag_text = Label(bulk_frame, text="LOCAL BAG", )
 transferBag_text = Label(bulk_frame, text="TRANSFER BAG", )
 priorityBag_text = Label(bulk_frame, text="PRIORITY BAG", )
 totalBulkBag_text = Label(bulk_frame, text="TOTAL BAGS IN BULK", )
+totalBulkBag = Label(bulk_frame, textvariable=resultBulkBag)
 totalBagsOb_text = Label(bulk_frame, text="TOTAL BAGS ON BOARD", )
 totalBagWeight_text = Label(bulk_frame, text="TOTAL WEIGHT OF BAGS", )
 captain_text = Label(bulk_frame, text="CAP", )
@@ -442,10 +446,16 @@ remarks_text = Label(bulk_frame, text="REMARKS", )
 
 # Entries
 stroller_entry = Entry(bulk_frame, textvariable=stroller)
+stroller_entry.config(validate="key", validatecommand=(reg, "%P"))
 wchr_entry = Entry(bulk_frame, textvariable=wchr)
+wchr_entry.config(validate="key", validatecommand=(reg, "%P"))
 localBag_entry = Entry(bulk_frame, textvariable=localBag)
+localBag_entry.config(validate="key", validatecommand=(reg, "%P"))
 transferBag_entry = Entry(bulk_frame, textvariable=transferBag)
+transferBag_entry.config(validate="key", validatecommand=(reg, "%P"))
 priorityBag_entry = Entry(bulk_frame, textvariable=priorityBag)
+priorityBag_entry.config(validate="key", validatecommand=(reg, "%P"))
+
 totalBagWeight_entry = Entry(bulk_frame, textvariable=totalBagWeight)
 captain_entry = Entry(bulk_frame, textvariable=captain)
 h2o_entry = Entry(bulk_frame, textvariable=h2o)
@@ -590,6 +600,7 @@ wchr_entry.grid(row=4, column=7)
 localBag_entry.grid(row=5, column=7)
 transferBag_entry.grid(row=6, column=7)
 priorityBag_entry.grid(row=7, column=7)
+totalBulkBag.grid(row=8, column=7)
 totalBagWeight_entry.grid(row=10, column=7)
 captain_entry.grid(row=12, column=7)
 h2o_entry.grid(row=13, column=7)
@@ -611,6 +622,7 @@ exitButton.grid(row=28, column=7, padx=50)
 
 # Entry Field Tracing
 
+#Passangers
 zoneAA.trace("w", addTOB)
 zoneAC.trace("w", addTOB)
 zoneAI.trace("w", addTOB)
@@ -620,6 +632,13 @@ zoneBI.trace("w", addTOB)
 zoneCA.trace("w", addTOB)
 zoneCC.trace("w", addTOB)
 zoneCI.trace("w", addTOB)
+
+#Bags n Bulk
+stroller.trace("w", totalBulkBags)
+wchr.trace("w", totalBulkBags)
+localBag.trace("w", totalBulkBags)
+transferBag.trace("w", totalBulkBags)
+priorityBag.trace("w", totalBulkBags)
 
 ##########################################################
 root.mainloop()
