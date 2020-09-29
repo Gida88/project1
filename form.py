@@ -23,6 +23,7 @@ root.columnconfigure(2, weight=1)
 root.rowconfigure(3, weight=1)
 root.columnconfigure(3, weight=1)
 root.title("AeroMexico Report")
+root.configure(background="#23395d")
 
 root.iconbitmap(current_dir)
 # root.iconbitmap("C:/Users/gerge/Desktop/Python/CODEMY/TKINTER/aeromexico-logo.png")
@@ -46,11 +47,31 @@ reportType.set("(select)")
 
 # Put trace callbacks on the Entry DoubleVars
 def addTOB(name, index, mode):
-    resultPAXOB.set(zoneAA.get() + zoneAC.get() + zoneAI.get() + zoneBA.get() + zoneBC.get() + zoneBI.get() + zoneCA.get() + zoneCC.get() + zoneCI.get())
+    resultPAXOB.set(zoneAA.get() + zoneAC.get() + zoneAI.get() + zoneBA.get() + zoneBC.get() + zoneBI.get() +
+                    zoneCA.get() + zoneCC.get() + zoneCI.get())
 
 def totalBulkBags(name, index, mode):
-    resultBulkBag.set(stroller.get() + wchr.get() + localBag.get() + transferBag.get() + priorityBag.get())
+    list_of_bulk = [stroller.get(), wchr.get(), localBag.get(), transferBag.get(), priorityBag.get()]
+    total = 0
+    for index in list_of_bulk:
+        if index:
+            total += int(index)
+        else:
+            total += 0
+    resultBulkBag.set(total)
 
+    #resultBulkBag.set(stroller.get() + wchr.get() + localBag.get() + transferBag.get() + priorityBag.get())
+""" a = []
+    a.append(stroller.get())
+    a.append(wchr.get())
+    a.append(localBag.get())
+    a.append(transferBag.get())
+    a.append(priorityBag.get())
+    total = 0
+    for i in a:
+        if i := "":
+            total += i
+    resultBulkBag.set(total)"""
 
 # Data Validation Functions
 
@@ -474,7 +495,7 @@ highlightthickness=0, pady=3)
 
 # Buttons
 sendButton = Button(buttons_frame, text="SEND", image=send_button, borderwidth=0)
-saveButton = Button(buttons_frame, text="SAVE", command=save, image=save_button, borderwidth=0)
+saveButton = Button(buttons_frame, command=save, image=save_button, borderwidth=0, highlightthickness=0, padx=0, pady=0)
 exitButton = Button(buttons_frame, text="EXIT", command=root.quit, image=exit_button, borderwidth=0)
 
 ##################################################################################
@@ -489,7 +510,7 @@ title_frame.grid(row=0, column=0, columnspan=3)
 document_info_frame.grid(row=1, column=0, padx=10, sticky=W)
 passengers_frame.grid(row=2, column=0, columnspan=2, padx=10, sticky=W)
 bags_frame.grid(row=3, column=0, padx=10, sticky=W)
-bulk_frame.grid(row=1, column=1, rowspan=3, sticky=N, padx=20)
+bulk_frame.grid(row=1, column=1, rowspan=3, sticky=NSEW, padx=20)
 buttons_frame.grid(row=4, column=0, columnspan=3)
 
 # TITLE FRAME
