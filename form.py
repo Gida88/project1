@@ -43,10 +43,14 @@ reportTypeOptions = [
 reportType = StringVar()
 reportType.set(reportTypeOptions[0])
 
+# Prefilled values
+
 
 
 # Put trace callbacks on the Entry DoubleVars
+
 def addTOB(name, index, mode):
+
     resultPAXOB.set(zoneAA.get() + zoneAC.get() + zoneAI.get() + zoneBA.get() + zoneBC.get() + zoneBI.get() +
                     zoneCA.get() + zoneCC.get() + zoneCI.get())
 
@@ -247,6 +251,19 @@ def save():
 
 ##################################################################################
 
+# FRAMES
+
+contents = Frame(root)
+title_frame = Frame(contents, padx=5, pady=5)
+document_info_frame = LabelFrame(contents, text="Document Info", width=620, height=215, padx=20, pady=20)
+#document_info_frame.grid_propagate(0)
+passengers_frame = LabelFrame(contents, text="Passengers", width=620, height=215, padx=20, pady=20)
+#passengers_frame.grid_propagate(0)
+bags_frame = LabelFrame(contents, text="Bags", padx=20, pady=20)
+bulk_frame = LabelFrame(contents, text="Bulk", padx=20, pady=20)
+buttons_frame = LabelFrame(contents, text="Buttons", padx=20, pady=20)
+#buttons_frame = Frame(root, padx=20, pady=40, relief=SUNKEN)
+
 # VARIABLE CREATION
 
 today = date.today()
@@ -255,13 +272,13 @@ today_string = today.strftime("%Y/%m/%d")
 reg = root.register(only_numbers)
 
 my_img = ImageTk.PhotoImage(Image.open(current_dir2))
-crew = StringVar()
-aircraftType = StringVar()
-registration = StringVar()
-route = StringVar()
-flightNumber = StringVar()
-jClass = StringVar()
-yClass = StringVar()
+crew = StringVar(document_info_frame, value="3/8")
+aircraftType = StringVar(document_info_frame, value="787-9")
+registration = StringVar(document_info_frame, value="N183AM")
+route = StringVar(document_info_frame, value="AMS-MEX")
+flightNumber = StringVar(document_info_frame, value="26")
+jClass = IntVar()
+yClass = IntVar()
 zoneAA = IntVar()
 zoneAC = IntVar()
 zoneAI = IntVar()
@@ -271,14 +288,14 @@ zoneBI = IntVar()
 zoneCA = IntVar()
 zoneCC = IntVar()
 zoneCI = IntVar()
-lirEdno = StringVar()
+lirEdno = StringVar(document_info_frame, value="2")
 totalXqInAke = StringVar()  # here comes the totl bags in AKE formula
 resultPAXOB = IntVar()  #auto counter for all passanger on board
 
-container = StringVar()
-position = StringVar()
-number_of_xq = StringVar()
-type_xq = StringVar()
+container = StringVar(document_info_frame, value="AKE1515AM")
+position = StringVar(document_info_frame, value="41L")
+number_of_xq = StringVar(document_info_frame, value="40")
+type_xq = StringVar(document_info_frame, value="PRIO")
 container2 = StringVar()
 position2 = StringVar()
 number_of_xq2 = StringVar()
@@ -317,15 +334,15 @@ transferBag = IntVar()
 priorityBag = IntVar()
 resultBulkBag = IntVar()  # here comes the total bulk bags
 totalBagsOb = StringVar()  # here comes the total on board bags
-totalBagWeight = StringVar()
-captain = StringVar()
-h2o = StringVar()
-flightPlan = StringVar()
-runway = StringVar()
-runwayCondition = StringVar()
-fuel = StringVar()
-damagedBags = StringVar()
-remarks = StringVar()
+totalBagWeight = StringVar(document_info_frame, value="2000 KG")
+captain = StringVar(document_info_frame, value="RUIZ")
+h2o = StringVar(document_info_frame, value="66%")
+flightPlan = StringVar(document_info_frame, value="RC 1022")
+runway = StringVar(document_info_frame, value="36L")
+runwayCondition = StringVar(document_info_frame, value="DRY")
+fuel = StringVar(document_info_frame, value="77000")
+damagedBags = StringVar(document_info_frame, value="NONE")
+remarks = StringVar(document_info_frame, value="NONE")
 totalBagsOb = StringVar()  # here comes the total on baord bags
 total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 
@@ -342,18 +359,7 @@ type_xq_list = []
 
 # WIDGET CREATION
 
-# FRAMES
 
-contents = Frame(root)
-title_frame = Frame(contents, padx=5, pady=5)
-document_info_frame = LabelFrame(contents, text="Document Info", width=620, height=215, padx=20, pady=20)
-#document_info_frame.grid_propagate(0)
-passengers_frame = LabelFrame(contents, text="Passengers", width=620, height=215, padx=20, pady=20)
-#passengers_frame.grid_propagate(0)
-bags_frame = LabelFrame(contents, text="Bags", padx=20, pady=20)
-bulk_frame = LabelFrame(contents, text="Bulk", padx=20, pady=20)
-buttons_frame = LabelFrame(contents, text="Buttons", padx=20, pady=20)
-#buttons_frame = Frame(root, padx=20, pady=40, relief=SUNKEN)
 
 # TITLE FRAME
 
@@ -398,8 +404,10 @@ infant_text = Label(passengers_frame, text="INFANT", )
 totalOB = Label(passengers_frame, textvariable=resultPAXOB)
 
 # Entries
-jClass_entry = Entry(passengers_frame, textvariable=jClass)
-yClass_entry = Entry(passengers_frame, textvariable=yClass)
+jClass_entry = Entry(passengers_frame, textvariable=jClass, width=5, justify="center")
+jClass_entry.config(validate="key", validatecommand=(reg, "%P"))
+yClass_entry = Entry(passengers_frame, textvariable=yClass, width=5, justify="center")
+yClass_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneAA_entry = Entry(passengers_frame, textvariable=zoneAA, width=5, justify="center")
 zoneAA_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneAC_entry = Entry(passengers_frame, textvariable=zoneAC, width=5, justify="center")
@@ -660,6 +668,8 @@ wchr.trace("w", totalBulkBags)
 localBag.trace("w", totalBulkBags)
 transferBag.trace("w", totalBulkBags)
 priorityBag.trace("w", totalBulkBags)
+
+
 
 ##########################################################
 root.mainloop()
