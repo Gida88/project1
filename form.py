@@ -153,7 +153,7 @@ def save():
     #def save_info():
     #reportType_info = reportTypeDrop.get()  #fix 'OptionMenu' object has no attribute 'get'
     #date_info = today.get()    # fix date for print
-    directory = filedialog.asksaveasfilename(parent=root, initialfile=(flightNumber.get()) + " " + (reportType.get()) + " Report" ".pdf")  # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
+    directory = filedialog.asksaveasfilename(parent=root, initialfile=(flightNumber.get()) + " " + (reportType.get()) + " Report.pdf")  # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
 
     crew_info = crew.get()
     aircraftType_info = aircraftType.get()
