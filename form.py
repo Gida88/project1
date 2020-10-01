@@ -1,7 +1,7 @@
 from tkinter import *
 from datetime import date
 from tkinter import messagebox
-from fpdf import FPDF
+from fpdf import FPDF, HTMLMixin
 from tkinter import filedialog
 from tkinter import scrolledtext
 import os
@@ -149,6 +149,7 @@ def send():
     #fill it up later
     pass
 
+
 def save():
     #def save_info():
     #reportType_info = reportTypeDrop.get()  #fix 'OptionMenu' object has no attribute 'get'
@@ -205,18 +206,20 @@ def save():
     pdf.add_page()
     pdf.set_font("Arial",size=15)
     pdf.cell(0, 5, txt = " " +(reportType.get())+" Report", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"DATE        " +today_string+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"CREW       "+crew_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"A/C TYPE  "+aircraftType_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"REG         "+registration_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"FLIGHT     "+flight_nunber_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"ROUTE     " +route_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt=" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"DATE                              " +today_string+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"CREW                             "+crew_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"A/C TYPE                       "+aircraftType_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"REG                                "+registration_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"FLIGHT                           "+flight_nunber_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"ROUTE                           " +route_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " , ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"J "+str(j_class_info)+" Y "+str(y_class_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"J      "+str(j_class_info)+"      Y      "+str(y_class_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt=" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"AREA    "+"  "+"ADULT"+"  "+"CHILD"+"  "+"INFANT", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"ZONE A  "+"  "+str(zoneAA_info)+"            "+str(zoneAC_info)+"         "+str(zoneAI_info)+" ", ln=1, align="L")   # align in table form
-    pdf.cell(0, 5, txt = " " +"ZONE B  "+"  "+str(zoneBA_info)+"            "+str(zoneBC_info)+"         "+str(zoneBI_info)+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"ZONE C  "+"  "+str(zoneCA_info)+"            "+str(zoneCC_info)+"         "+str(zoneCI_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"ZONE A  "+"     "+str(zoneAA_info)+"            "+str(zoneAC_info)+"          "+str(zoneAI_info)+" ", ln=1, align="L")   # align in table form
+    pdf.cell(0, 5, txt = " " +"ZONE B  "+"     "+str(zoneBA_info)+"            "+str(zoneBC_info)+"          "+str(zoneBI_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"ZONE C  "+"     "+str(zoneCA_info)+"            "+str(zoneCC_info)+"          "+str(zoneCI_info)+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " , ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"LIR "+lir_edno_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +"TOTAL BAGS IN AKEs "+total_xq_in_ake_info+" ", ln=1, align="L")
@@ -224,30 +227,31 @@ def save():
     pdf.cell(0, 5, txt = " " +registration_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " +registration_info+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " , ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"STROLLER        "+str(stroller_info)+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"WCHR               "+str(wchr_info)+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"LCL BAGS          "+str(local_bag_info)+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"TRANSFER BAGS "+str(transfer_bag_info)+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"PRIO BAGS        "+str(priority_bag_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"STROLLER                      "+str(stroller_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"WCHR                             "+str(wchr_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"LCL BAGS                       "+str(local_bag_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"TRANSFER BAGS          "+str(transfer_bag_info)+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"PRIO BAGS                     "+str(priority_bag_info)+" ", ln=1, align="L")
     #pdf.cell(0, 5, txt = " " +"TOTAL BULK    "+str(total_bulk_bag_info)+" ", ln=1, align="L")
     pdf.cell(0, 5, txt = " " , ln=1, align="L")
     #pdf.cell(0, 5, txt = " " +"TOTAL BAGS OB    "+total_bags_ob_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"TOTAL BAG WEIGHT "+total_bag_weight_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"CAPTAIN               "+captain_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"WATER LEVEL         "+h2o_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"FLIGHT PLAN          "+flightplan_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"RNWY                    "+runway_info+" "+runway_condition_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"FUEL                     "+fuel_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"DAMAGED BAGS       "+damaged_bags_info+" ", ln=1, align="L")
-    pdf.cell(0, 5, txt = " " +"REMARKS             "+remarks_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"TOTAL BAG WEIGHT     "+total_bag_weight_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"CAPTAIN                         "+captain_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"WATER LEVEL                "+h2o_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"FLIGHT PLAN                  "+flightplan_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"RNWY                              "+runway_info+" "+runway_condition_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"FUEL                                "+fuel_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"DAMAGED BAGS            "+damaged_bags_info+" ", ln=1, align="L")
+    pdf.cell(0, 5, txt = " " +"REMARKS                      "+remarks_info+" ", ln=1, align="L")
     pdf.output(directory, "F")
 
     #reportType_entry.delete(0, END)
     #date_entry.delete(0, END)
-    crew_entry.delete(0, END)
-    aircraftType_entry.delete(0, END)
-    registration_entry.delete(0, END)
+    #crew_entry.delete(0, END)
+    #aircraftType_entry.delete(0, END)
+    #registration_entry.delete(0, END)
     messagebox.showinfo("Document Saved", "Your document has been saved successfully")
+
 
 ##################################################################################
 
