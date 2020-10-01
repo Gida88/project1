@@ -41,7 +41,7 @@ reportTypeOptions = [
 ]
 
 reportType = StringVar()
-reportType.set("(select)")
+reportType.set(reportTypeOptions[0])
 
 
 
