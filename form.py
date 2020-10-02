@@ -445,9 +445,9 @@ infant_text = Label(passengers_frame, text="INFANT", )
 totalOB = Label(passengers_frame, textvariable=resultPAXOB)
 
 # Entries
-jClass_entry = Entry(passengers_frame, textvariable=jClass, width=5, justify="center")
+jClass_entry = Entry(passengers_frame, textvariable=jClass, justify="center")
 jClass_entry.config(validate="key", validatecommand=(reg, "%P"))
-yClass_entry = Entry(passengers_frame, textvariable=yClass, width=5, justify="center")
+yClass_entry = Entry(passengers_frame, textvariable=yClass, justify="center")
 yClass_entry.config(validate="key", validatecommand=(reg, "%P"))
 zoneAA_entry = Entry(passengers_frame, textvariable=zoneAA, width=5, justify="center")
 zoneAA_entry.config(validate="key", validatecommand=(reg, "%P"))
