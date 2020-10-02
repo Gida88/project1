@@ -255,32 +255,20 @@ def save():
 
 ##################################################################################
 
-# FRAMES
-
-contents = Frame(root)
-title_frame = Frame(contents, padx=5, pady=5)
-document_info_frame = LabelFrame(contents, text="Document Info", width=620, height=215, padx=20, pady=20)
-#document_info_frame.grid_propagate(0)
-passengers_frame = LabelFrame(contents, text="Passengers", width=620, height=215, padx=20, pady=20)
-#passengers_frame.grid_propagate(0)
-bags_frame = LabelFrame(contents, text="Bags", padx=20, pady=20)
-bulk_frame = LabelFrame(contents, text="Bulk", padx=20, pady=20)
-buttons_frame = LabelFrame(contents, text="Buttons", padx=20, pady=20)
-#buttons_frame = Frame(root, padx=20, pady=40, relief=SUNKEN)
-
 # VARIABLE CREATION
 
 today = date.today()
-today_string = today.strftime("%Y/%m/%d")
+#today_string = today.strftime("%Y/%m/%d")
+today_string = today.strftime("%d/%m/%Y")
 
 reg = root.register(only_numbers)
 
 my_img = ImageTk.PhotoImage(Image.open(current_dir2))
-crew = StringVar(document_info_frame, value="3/8")
-aircraftType = StringVar(document_info_frame, value="787-9")
-registration = StringVar(document_info_frame, value="N183AM")
-route = StringVar(document_info_frame, value="AMS-MEX")
-flightNumber = StringVar(document_info_frame, value="26")
+crew = StringVar(value="3/8")
+aircraftType = StringVar(value="787-9")
+registration = StringVar(value="N183AM")
+route = StringVar(value="AMS-MEX")
+flightNumber = StringVar(value="26")
 jClass = IntVar()
 yClass = IntVar()
 zoneAA = IntVar()
@@ -292,14 +280,14 @@ zoneBI = IntVar()
 zoneCA = IntVar()
 zoneCC = IntVar()
 zoneCI = IntVar()
-lirEdno = StringVar(document_info_frame, value="2")
+lirEdno = StringVar(value="2")
 totalXqInAke = StringVar()  # here comes the totl bags in AKE formula
 resultPAXOB = IntVar()  #auto counter for all passanger on board
 
-container = StringVar(document_info_frame, value="AKE1515AM")
-position = StringVar(document_info_frame, value="41L")
-number_of_xq = StringVar(document_info_frame, value="40")
-type_xq = StringVar(document_info_frame, value="PRIO")
+container = StringVar(value="AKE1515AM")
+position = StringVar(value="41L")
+number_of_xq = StringVar(value="40")
+type_xq = StringVar(value="PRIO")
 container2 = StringVar()
 position2 = StringVar()
 number_of_xq2 = StringVar()
@@ -338,15 +326,15 @@ transferBag = IntVar()
 priorityBag = IntVar()
 resultBulkBag = IntVar()  # here comes the total bulk bags
 totalBagsOb = StringVar()  # here comes the total on board bags
-totalBagWeight = StringVar(document_info_frame, value="2000 KG")
-captain = StringVar(document_info_frame, value="RUIZ")
-h2o = StringVar(document_info_frame, value="66%")
-flightPlan = StringVar(document_info_frame, value="RC 1022")
-runway = StringVar(document_info_frame, value="36L")
-runwayCondition = StringVar(document_info_frame, value="DRY")
-fuel = StringVar(document_info_frame, value="77000")
-damagedBags = StringVar(document_info_frame, value="NONE")
-remarks = StringVar(document_info_frame, value="NONE")
+totalBagWeight = StringVar(value="2000 KG")
+captain = StringVar(value="RUIZ")
+h2o = StringVar(value="66%")
+flightPlan = StringVar(value="RC 1022")
+runway = StringVar(value="36L")
+runwayCondition = StringVar(value="DRY")
+fuel = StringVar(value="77000")
+damagedBags = StringVar(value="NONE")
+remarks = StringVar(value="NONE")
 totalBagsOb = StringVar()  # here comes the total on baord bags
 total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 
@@ -363,7 +351,18 @@ type_xq_list = []
 
 # WIDGET CREATION
 
+# FRAMES
 
+contents = Frame(root)
+title_frame = Frame(contents, padx=5, pady=5)
+document_info_frame = LabelFrame(contents, text="Document Info", width=620, height=215, padx=20, pady=20)
+#document_info_frame.grid_propagate(0)
+passengers_frame = LabelFrame(contents, text="Passengers", width=620, height=215, padx=20, pady=20)
+#passengers_frame.grid_propagate(0)
+bags_frame = LabelFrame(contents, text="Bags", padx=20, pady=20)
+bulk_frame = LabelFrame(contents, text="Bulk", padx=20, pady=20)
+buttons_frame = LabelFrame(contents, text="Buttons", padx=20, pady=20)
+#buttons_frame = Frame(root, padx=20, pady=40, relief=SUNKEN)
 
 # TITLE FRAME
 
@@ -377,7 +376,7 @@ title_image = Label(title_frame, image=my_img, borderwidth=0)
 # Labels
 reportType_text = Label(document_info_frame, text="Report Type")  # dropdown menu
 date_text = Label(document_info_frame, text="Date")
-today_text = Label(document_info_frame, text=today)
+today_text = Label(document_info_frame, text=today_string)
 reportTypeDrop = OptionMenu(document_info_frame, reportType, *reportTypeOptions)
 flightNumber_text = Label(document_info_frame, text="Flight Number", )  # flight number with search engine //
 route_text = Label(document_info_frame, text="Route", )  #
