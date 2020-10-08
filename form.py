@@ -10,12 +10,21 @@ from PIL import ImageTk, Image
 directory_name = os.path.dirname("project1")
 current_dir = os.path.join(directory_name, "Images", "AeroMexico.ico")
 current_dir2 = os.path.join(directory_name, "Images", "aeromexico-vector-logo.png")
-current_dir3 = os.path.join(directory_name, "Images", "button_send.png")
-current_dir4 = os.path.join(directory_name, "Images", "button_save.png")
-current_dir5 = os.path.join(directory_name, "Images", "button_exit.png")
+current_dir3 = os.path.join(directory_name, "Images", "AeroMexico Trans.png")
+current_dir4 = os.path.join(directory_name, "Images", "button_send.png")
+current_dir5 = os.path.join(directory_name, "Images", "button_save.png")
+current_dir6 = os.path.join(directory_name, "Images", "button_exit.png")
+
+
 
 root = Tk()
-#root.geometry("1155x755")
+app_width = 1110
+app_height = 820
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+x = (screen_width / 2) - (app_width / 2)
+y = (screen_height / 2) - (app_height / 2)
+root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
 root.rowconfigure(2, weight=1)
@@ -177,6 +186,7 @@ def save():
     #total_info = total.get()  # hre comes the total ob formula
 
     lir_edno_info = lirEdno.get()
+    # Calculating the total number of bags in the Bags Entries
     total_xq_in_ake_info = 0
     for x in number_of_xq_list:
         total_xq_in_ake_info += int(x.get())
@@ -210,6 +220,7 @@ def save():
     pdf.add_page()
     pdf.set_font("Arial", size=15)
     pdf.image(current_dir2, x=9, y=9, w=50)
+    pdf.image(current_dir3, x=10, y=53, w=190)
     pdf.cell(0, 6, txt="", ln=1, align="L")
     pdf.ln()
     pdf.ln()
@@ -391,9 +402,9 @@ remarks = StringVar(value="NONE")
 totalBagsOb = StringVar()  # here comes the total on baord bags
 total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 
-send_button = PhotoImage(file=f"{current_dir3}")
-save_button = PhotoImage(file=f"{current_dir4}")
-exit_button = PhotoImage(file=f"{current_dir5}")
+send_button = PhotoImage(file=f"{current_dir4}")
+save_button = PhotoImage(file=f"{current_dir5}")
+exit_button = PhotoImage(file=f"{current_dir6}")
 # Lists
 container_list = []
 position_list =[]
@@ -510,18 +521,17 @@ remove_button = Button(bags_frame, text="-", fg="red", command=removeLine, state
 # BULK FRAME
 
 # Labels
-bulk_text = Label(bulk_frame, text="BULK", )
 stroller_text = Label(bulk_frame, text="Stroller", )
 wchr_text = Label(bulk_frame, text="WCHR", )
 localBag_text = Label(bulk_frame, text="Local Bag", )
 transferBag_text = Label(bulk_frame, text="Transfer Bag", )
 priorityBag_text = Label(bulk_frame, text="Priority Bag", )
-totalBulkBag_text = Label(bulk_frame, text="TOTAL BAGS IN BULK", )
+totalBulkBag_text = Label(bulk_frame, text="Total Bags in Bulk", )
 totalBulkBag = Label(bulk_frame, textvariable=resultBulkBag)
-totalBagsOb_text = Label(bulk_frame, text="TOTAL BAGS ON BOARD", )
+totalBagsOb_text = Label(bulk_frame, text="Total Bags on Board", )
 totalBagWeight_text = Label(bulk_frame, text="Total Bag Weight", )
-captain_text = Label(bulk_frame, text="CAP", )
-h2o_text = Label(bulk_frame, text="H2O", )
+captain_text = Label(bulk_frame, text="Captain", )
+h2o_text = Label(bulk_frame, text="Water Level", )
 flightPlan_text = Label(bulk_frame, text="Flight Plan", )
 runway_text = Label(bulk_frame, text="Take-Off Runway", )
 runwayCondition_text = Label(bulk_frame, text="Runway Condition", )
@@ -571,10 +581,10 @@ exitButton = Button(buttons_frame, text="EXIT", command=root.quit, image=exit_bu
 
 contents.grid(row=1, column=1)
 title_frame.grid(row=0, column=0, columnspan=3)
-document_info_frame.grid(row=1, column=0, padx=10, sticky=W)
-passengers_frame.grid(row=2, column=0, columnspan=2, padx=10, sticky=W)
-bags_frame.grid(row=3, column=0, padx=10, sticky=W)
-bulk_frame.grid(row=1, column=1, rowspan=3, sticky=NSEW, padx=20)
+document_info_frame.grid(row=1, column=0, padx=20)
+passengers_frame.grid(row=2, column=0, padx=20)
+bags_frame.grid(row=3, column=0, padx=20)
+bulk_frame.grid(row=1, column=1, rowspan=3, padx=20)
 buttons_frame.grid(row=4, column=0, columnspan=3)
 
 # TITLE FRAME
@@ -662,22 +672,22 @@ remove_button.grid(row=4, column=5)
 
 # Labels
 #bulk_text.grid(row=2, column=6, padx = 20, columnspan=2)
-stroller_text.grid(row=3, column=6, padx = 20, sticky=W)
-wchr_text.grid(row=4, column=6, padx = 20, sticky=W)
-localBag_text.grid(row=5, column=6, padx = 20, sticky=W)
-transferBag_text.grid(row=6, column=6, padx = 20, sticky=W)
-priorityBag_text.grid(row=7, column=6, padx = 20, sticky=W)
-totalBulkBag_text.grid(row=8, column=6, padx = 20, sticky=W)
-totalBagsOb_text.grid(row=9, column=6, padx = 20, sticky=W)
-totalBagWeight_text.grid(row=10, column=6, padx = 20, sticky=W)
-captain_text.grid(row=12, column=6, padx = 20, sticky=W)
-h2o_text.grid(row=13, column=6, padx = 20, sticky=W)
-flightPlan_text.grid(row=14, column=6, padx = 20, sticky=W)
-runway_text.grid(row=15, column=6, padx = 20, sticky=W)
-runwayCondition_text.grid(row=16, column=6, padx = 20, sticky=W)
-fuel_text.grid(row=17, column=6, padx = 20, sticky=W)
-damagedBags_text.grid(row=18, column=6, padx = 20, sticky=W)
-remarks_text.grid(row=19, column=6, padx = 20, sticky=NW)
+stroller_text.grid(row=3, column=6, sticky=W)
+wchr_text.grid(row=4, column=6, sticky=W)
+localBag_text.grid(row=5, column=6, sticky=W)
+transferBag_text.grid(row=6, column=6, sticky=W)
+priorityBag_text.grid(row=7, column=6, sticky=W)
+totalBulkBag_text.grid(row=8, column=6, sticky=W)
+totalBagsOb_text.grid(row=9, column=6, sticky=W)
+totalBagWeight_text.grid(row=10, column=6, sticky=W)
+captain_text.grid(row=12, column=6, sticky=W)
+h2o_text.grid(row=13, column=6, sticky=W)
+flightPlan_text.grid(row=14, column=6, sticky=W)
+runway_text.grid(row=15, column=6, sticky=W)
+runwayCondition_text.grid(row=16, column=6, sticky=W)
+fuel_text.grid(row=17, column=6, sticky=W)
+damagedBags_text.grid(row=18, column=6, sticky=W)
+remarks_text.grid(row=19, column=6, sticky=NW)
 
 # Entries
 stroller_entry.grid(row=3, column=7)
@@ -707,7 +717,7 @@ exitButton.grid(row=28, column=7, padx=50)
 
 # Entry Field Tracing
 
-#Passangers
+#Passengers
 zoneAA.trace("w", addTOB)
 zoneAC.trace("w", addTOB)
 zoneAI.trace("w", addTOB)
@@ -718,7 +728,7 @@ zoneCA.trace("w", addTOB)
 zoneCC.trace("w", addTOB)
 zoneCI.trace("w", addTOB)
 
-#Bags n Bulk
+#Bags & Bulk
 stroller.trace("w", totalBulkBags)
 wchr.trace("w", totalBulkBags)
 localBag.trace("w", totalBulkBags)
