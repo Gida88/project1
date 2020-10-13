@@ -1,6 +1,7 @@
 from tkinter import *
 from datetime import date
 from tkinter import messagebox
+from tkinter import ttk
 from fpdf import FPDF, HTMLMixin
 from tkinter import filedialog
 from tkinter import scrolledtext
@@ -399,7 +400,6 @@ runwayCondition = StringVar(value="DRY")
 fuel = StringVar(value="77000")
 damagedBags = StringVar(value="NONE")
 remarks = StringVar(value="NONE")
-totalBagsOb = StringVar()  # here comes the total on baord bags
 total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 
 send_button = PhotoImage(file=f"{current_dir4}")
@@ -415,18 +415,25 @@ type_xq_list = []
 
 # WIDGET CREATION
 
+# NOTEBOOK
+
+my_notebook = ttk.Notebook(root, padding=0)
+
+# ------------------------------------------------------------------------------ #
+
+# MY DOCUMENT
+
 # FRAMES
 
-contents = Frame(root)
-title_frame = Frame(contents, padx=5, pady=5)
-document_info_frame = LabelFrame(contents, text="Document Info", width=620, height=215, padx=20, pady=20)
+mydocument_mainframe = Frame(my_notebook)
+title_frame = Frame(mydocument_mainframe, padx=5, pady=5)
+document_info_frame = LabelFrame(mydocument_mainframe, text="Document Info", width=620, height=215, padx=20, pady=20)
 #document_info_frame.grid_propagate(0)
-passengers_frame = LabelFrame(contents, text="Passengers", width=620, height=215, padx=20, pady=20)
+passengers_frame = LabelFrame(mydocument_mainframe, text="Passengers", width=620, height=215, padx=20, pady=20)
 #passengers_frame.grid_propagate(0)
-bags_frame = LabelFrame(contents, text="Bags", padx=20, pady=20)
-bulk_frame = LabelFrame(contents, text="Bulk", padx=20, pady=20)
-buttons_frame = LabelFrame(contents, text="Buttons", padx=20, pady=20)
-#buttons_frame = Frame(root, padx=20, pady=40, relief=SUNKEN)
+bags_frame = LabelFrame(mydocument_mainframe, text="Bags", padx=20, pady=20)
+bulk_frame = LabelFrame(mydocument_mainframe, text="Bulk", padx=20, pady=20)
+buttons_frame = LabelFrame(mydocument_mainframe, text="Buttons", padx=20, pady=20)
 
 # TITLE FRAME
 
@@ -446,7 +453,7 @@ flightNumber_text = Label(document_info_frame, text="Flight Number", )  # flight
 route_text = Label(document_info_frame, text="Route", )  #
 registration_text = Label(document_info_frame, text="Registration", )  #
 aircraftType_text = Label(document_info_frame, text="A/C type", )  # flight number/route/reg connect together
-crew_text = Label(document_info_frame, text="Crew", )  # two different box and fomrat after
+crew_text = Label(document_info_frame, text="Crew", )  # two different box and format after
 
 # Entries
 flight_number_entry = Entry(document_info_frame, textvariable=flightNumber)
@@ -498,7 +505,7 @@ zoneCI_entry.config(validate="key", validatecommand=(reg, "%P"))
 
 # Labels
 lirEdno_text = Label(bags_frame, text="LIR EDNO", )
-xqContainerMessage_text = Label(bags_frame, text="BAGGAGE CONTAINER MESSAGE", )  # + icon to add new line for AKE if needed
+xqContainerMessage_text = Label(bags_frame, text="BAGGAGE CONTAINER MESSAGE", )
 totalXqInAke_text = Label(bags_frame, text="TOTAL BAGS IN AKE", )
 container_text = Label(bags_frame, text="CONTAINER")
 position_text = Label(bags_frame, text="POSITION", )
@@ -527,7 +534,6 @@ localBag_text = Label(bulk_frame, text="Local Bag", )
 transferBag_text = Label(bulk_frame, text="Transfer Bag", )
 priorityBag_text = Label(bulk_frame, text="Priority Bag", )
 totalBulkBag_text = Label(bulk_frame, text="Total Bags in Bulk", )
-totalBulkBag = Label(bulk_frame, textvariable=resultBulkBag)
 totalBagsOb_text = Label(bulk_frame, text="Total Bags on Board", )
 totalBagWeight_text = Label(bulk_frame, text="Total Bag Weight", )
 captain_text = Label(bulk_frame, text="Captain", )
@@ -550,7 +556,8 @@ transferBag_entry = Entry(bulk_frame, textvariable=transferBag)
 transferBag_entry.config(validate="key", validatecommand=(reg, "%P"))
 priorityBag_entry = Entry(bulk_frame, textvariable=priorityBag)
 priorityBag_entry.config(validate="key", validatecommand=(reg, "%P"))
-
+totalBulkBag = Entry(bulk_frame, textvariable=resultBulkBag)
+totalBagsonBoard = Entry(bulk_frame, textvariable=totalBagsOb)
 totalBagWeight_entry = Entry(bulk_frame, textvariable=totalBagWeight)
 captain_entry = Entry(bulk_frame, textvariable=captain)
 h2o_entry = Entry(bulk_frame, textvariable=h2o)
@@ -569,17 +576,60 @@ highlightthickness=0, pady=3)
 
 # Buttons
 sendButton = Button(buttons_frame, text="SEND", image=send_button, borderwidth=0)
-saveButton = Button(buttons_frame, command=save, image=save_button, borderwidth=0, highlightthickness=0, padx=0, pady=0)
+saveButton = Button(buttons_frame, command=save, image=save_button, borderwidth=0)
 exitButton = Button(buttons_frame, text="EXIT", command=root.quit, image=exit_button, borderwidth=0)
+
+# ------------------------------------------------------------------------------ #
+
+# DATABASE
+
+# FRAMES
+
+database_mainframe = Frame(my_notebook)
+treeview_frame = Frame(database_mainframe)
+buttons_frame2 = Frame(database_mainframe)
+
+# Treeview
+
+my_tree = ttk.Treeview(treeview_frame)
+# Defining columns
+my_tree["columns"] = ("Date", "Flight Number", "Passengers", "Baggage")
+# Formatting columns
+my_tree.column("#0", width=120, minwidth=25, anchor=CENTER)
+my_tree.column("Date", width=120, minwidth=25, anchor=CENTER)
+my_tree.column("Flight Number", width=150, minwidth=25, anchor=CENTER)
+my_tree.column("Passengers", width=120, minwidth=25, anchor=CENTER)
+my_tree.column("Baggage", width=120, minwidth=25, anchor=CENTER)
+# Creating headings for columns
+my_tree.heading("#0", text="Report Type", anchor=CENTER)
+my_tree.heading("Date", text="Date", anchor=CENTER)
+my_tree.heading("Flight Number", text="Flight Number", anchor=W)
+my_tree.heading("Passengers", text="Passengers", anchor=CENTER)
+my_tree.heading("Baggage", text="Baggage", anchor=W)
+#Adding data
+my_tree.insert(parent="", index="end", iid=0, text="Final", values=("13-10-2020", "AM1234", 42, 67))
+my_tree.insert(parent="0", index="end", iid=1, text="Preliminary", values=("13-10-2020", "AM1234", 40, 60))
+
+# Buttons
+
+add_record_button = Button(buttons_frame2, text="Add", padx=10, pady=5, width=10)
+remove_record_button = Button(buttons_frame2, text="Remove", padx=10, pady=5, width=10)
+edit_record_button = Button(buttons_frame2, text="Edit", padx=10, pady=5, width=10)
 
 ##################################################################################
 
 
 # PLACEMENT ON THE GRID
 
+# NOTEBOOK
+
+my_notebook.grid(row=0, column=0)
+
+# MY DOCUMENT
+
 # Frames
 
-contents.grid(row=1, column=1)
+mydocument_mainframe.grid(row=1, column=1)
 title_frame.grid(row=0, column=0, columnspan=3)
 document_info_frame.grid(row=1, column=0, padx=20)
 passengers_frame.grid(row=2, column=0, padx=20)
@@ -696,6 +746,7 @@ localBag_entry.grid(row=5, column=7)
 transferBag_entry.grid(row=6, column=7)
 priorityBag_entry.grid(row=7, column=7)
 totalBulkBag.grid(row=8, column=7)
+totalBagsonBoard.grid(row=9, column=7)
 totalBagWeight_entry.grid(row=10, column=7)
 captain_entry.grid(row=12, column=7)
 h2o_entry.grid(row=13, column=7)
@@ -712,6 +763,26 @@ remarks_entry.grid(row=19, column=7, sticky=E)
 sendButton.grid(row=28, column=1, padx=50)
 saveButton.grid(row=28, column=3, padx=50)
 exitButton.grid(row=28, column=7, padx=50)
+
+# ------------------------------------------------------------------------------ #
+
+# DATABASE
+
+# FRAMES
+
+database_mainframe.grid(row=0, column=0)
+treeview_frame.grid(row=0, column=0)
+buttons_frame2.grid(row=0, column=2)
+
+# Treeview
+
+my_tree.grid(row=0, column=0, columnspan=3)
+
+# Buttons
+
+add_record_button.grid(row=0, column=0, padx=20, pady=10)
+remove_record_button.grid(row=1, column=0, padx=20, pady=10)
+edit_record_button.grid(row=2, column=0, padx=20, pady=10)
 
 ####################################################################
 
@@ -735,7 +806,12 @@ localBag.trace("w", totalBulkBags)
 transferBag.trace("w", totalBulkBags)
 priorityBag.trace("w", totalBulkBags)
 
+##########################################################
 
+# Adding Tabs to Notebook
+
+my_notebook.add(mydocument_mainframe, text="My Report")
+my_notebook.add(database_mainframe, text="Database")
 
 ##########################################################
 root.mainloop()
