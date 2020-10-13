@@ -584,7 +584,7 @@ title_frame.grid(row=0, column=0, columnspan=3)
 document_info_frame.grid(row=1, column=0, padx=20)
 passengers_frame.grid(row=2, column=0, padx=20)
 bags_frame.grid(row=3, column=0, padx=20)
-bulk_frame.grid(row=1, column=1, rowspan=3, padx=20)
+bulk_frame.grid(row=1, column=1, rowspan=3, padx=20, sticky=N)
 buttons_frame.grid(row=4, column=0, columnspan=3)
 
 # TITLE FRAME
