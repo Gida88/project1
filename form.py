@@ -15,7 +15,8 @@ current_dir3 = os.path.join(directory_name, "Images", "AeroMexico Trans.png")
 current_dir4 = os.path.join(directory_name, "Images", "button_send.png")
 current_dir5 = os.path.join(directory_name, "Images", "button_save.png")
 current_dir6 = os.path.join(directory_name, "Images", "button_exit.png")
-
+current_dir7 = os.path.join(directory_name, "Images", "icon_save.png")
+current_dir8 = os.path.join(directory_name, "Images", "icon_send.png")
 
 
 root = Tk()
@@ -155,7 +156,8 @@ def sum_AKE(number_of_xq):
 
 # Button Functions
 
-def send():
+def send(send_from, send_to, subject, message, files=[], server="localhost", port=587, username='', password='',
+         use_tls=True):
     #fill it up later
     pass
 
@@ -405,6 +407,9 @@ total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 send_button = PhotoImage(file=f"{current_dir4}")
 save_button = PhotoImage(file=f"{current_dir5}")
 exit_button = PhotoImage(file=f"{current_dir6}")
+
+save_icon = PhotoImage(file=f"{current_dir7}")
+send_icon = PhotoImage(file=f"{current_dir8}")
 # Lists
 container_list = []
 position_list =[]
@@ -426,6 +431,7 @@ my_notebook = ttk.Notebook(root, padding=0)
 # FRAMES
 
 mydocument_mainframe = Frame(my_notebook)
+test_frame = Frame(mydocument_mainframe, padx=5, pady=5)
 title_frame = Frame(mydocument_mainframe, padx=5, pady=5)
 document_info_frame = LabelFrame(mydocument_mainframe, text="Document Info", width=620, height=215, padx=20, pady=20)
 #document_info_frame.grid_propagate(0)
@@ -433,7 +439,7 @@ passengers_frame = LabelFrame(mydocument_mainframe, text="Passengers", width=620
 #passengers_frame.grid_propagate(0)
 bags_frame = LabelFrame(mydocument_mainframe, text="Bags", padx=20, pady=20)
 bulk_frame = LabelFrame(mydocument_mainframe, text="Bulk", padx=20, pady=20)
-buttons_frame = LabelFrame(mydocument_mainframe, text="Buttons", padx=20, pady=20)
+buttons_frame = LabelFrame(mydocument_mainframe, text="Buttons", padx=20)
 
 # TITLE FRAME
 
@@ -575,9 +581,12 @@ highlightthickness=0, pady=3)
 # BUTTON FRAME
 
 # Buttons
-sendButton = Button(buttons_frame, text="SEND", image=send_button, borderwidth=0)
+sendButton = Button(buttons_frame, image=send_button, borderwidth=0)
 saveButton = Button(buttons_frame, command=save, image=save_button, borderwidth=0)
-exitButton = Button(buttons_frame, text="EXIT", command=root.quit, image=exit_button, borderwidth=0)
+exitButton = Button(buttons_frame, command=root.quit, image=exit_button, borderwidth=0)
+
+saveIcon = Button(test_frame, command=save, image=save_icon, borderwidth=0)
+sendIcon = Button(test_frame, image=send_icon, borderwidth=0)
 
 # ------------------------------------------------------------------------------ #
 
@@ -587,7 +596,7 @@ exitButton = Button(buttons_frame, text="EXIT", command=root.quit, image=exit_bu
 
 database_mainframe = Frame(my_notebook)
 treeview_frame = Frame(database_mainframe)
-buttons_frame2 = Frame(database_mainframe)
+buttons_frame2 = LabelFrame(database_mainframe, relief=SUNKEN)
 
 # Treeview
 
@@ -623,7 +632,8 @@ edit_record_button = Button(buttons_frame2, text="Edit", padx=10, pady=5, width=
 
 # NOTEBOOK
 
-my_notebook.grid(row=0, column=0)
+#my_notebook.grid(row=0, column=0)
+my_notebook.pack()
 
 # MY DOCUMENT
 
@@ -631,6 +641,7 @@ my_notebook.grid(row=0, column=0)
 
 mydocument_mainframe.grid(row=1, column=1)
 title_frame.grid(row=0, column=0, columnspan=3)
+test_frame.grid(row=0, column=0, sticky=W, padx=20)
 document_info_frame.grid(row=1, column=0, padx=20)
 passengers_frame.grid(row=2, column=0, padx=20)
 bags_frame.grid(row=3, column=0, padx=20)
@@ -640,7 +651,7 @@ buttons_frame.grid(row=4, column=0, columnspan=3)
 # TITLE FRAME
 
 # Labels
-title_image.grid(row=0, column=0, sticky=W)
+title_image.grid(row=0, column=0)
 #title.grid(row=0, column=1)
 #subTitle.grid(row=1, column=1)
 
@@ -764,6 +775,9 @@ sendButton.grid(row=28, column=1, padx=50)
 saveButton.grid(row=28, column=3, padx=50)
 exitButton.grid(row=28, column=7, padx=50)
 
+saveIcon.grid(row=0, column=0, padx=10)
+sendIcon.grid(row=0, column=1, padx=10)
+
 # ------------------------------------------------------------------------------ #
 
 # DATABASE
@@ -772,7 +786,7 @@ exitButton.grid(row=28, column=7, padx=50)
 
 database_mainframe.grid(row=0, column=0)
 treeview_frame.grid(row=0, column=0)
-buttons_frame2.grid(row=0, column=2)
+buttons_frame2.grid(row=0, column=2, sticky=NSEW)
 
 # Treeview
 
