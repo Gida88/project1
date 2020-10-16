@@ -156,16 +156,32 @@ def sum_AKE(number_of_xq):
 
 # Button Functions
 
-def send(send_from, send_to, subject, message, files=[], server="localhost", port=587, username='', password='',
-         use_tls=True):
-    #fill it up later
+def send(text="Aero Mexico Report", subject="Daily Report",
+               from_email="Damianos Greg <damandgreg@outlook.com>",
+                to_emails=[]):
+    email_window = Toplevel()
+    email_window.title("Send My Report")
+    email_window.geometry(f"+{(int(x)+200)}+{(int(y)+200)}")
+    myLabel = Label(email_window, text="Please select what email adresses you want to send your report to:")
+    myLabel.pack()
+    email_entry = Entry(email_window, width=20)
+    email_entry.pack()
+    email1 = StringVar()
+    ams = Checkbutton(email_window, text="Amsterdam Station", variable=email1, onvalue="Yes", offvalue="No")
+    ams.pack()
+    email2 = StringVar()
+    mex = Checkbutton(email_window, text="Mexico City Station", variable=email2, onvalue="Yes", offvalue="No")
+    mex.pack()
+    email3 = StringVar()
+    can = Checkbutton(email_window, text="Cancun Station", variable=email3, onvalue="Yes", offvalue="No")
+    can.pack()
+    email4 = StringVar()
+    gua = Checkbutton(email_window, text="Guadalajara Station", variable=email4, onvalue="Yes", offvalue="No")
+    gua.pack()
     pass
 
 
 def save():
-    #def save_info():
-    #reportType_info = reportTypeDrop.get()  #fix 'OptionMenu' object has no attribute 'get'
-    #date_info = today.get()    # fix date for print
     directory = filedialog.asksaveasfilename(parent=root, initialfile=(flightNumber.get()) + " " + (reportType.get()) +
                                                                       " Report.pdf")  # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
 
@@ -581,12 +597,12 @@ highlightthickness=0, pady=3)
 # BUTTON FRAME
 
 # Buttons
-sendButton = Button(buttons_frame, image=send_button, borderwidth=0)
+sendButton = Button(buttons_frame, command=send, image=send_button, borderwidth=0)
 saveButton = Button(buttons_frame, command=save, image=save_button, borderwidth=0)
 exitButton = Button(buttons_frame, command=root.quit, image=exit_button, borderwidth=0)
 
 saveIcon = Button(test_frame, command=save, image=save_icon, borderwidth=0)
-sendIcon = Button(test_frame, image=send_icon, borderwidth=0)
+sendIcon = Button(test_frame, command=send, image=send_icon, borderwidth=0)
 
 # ------------------------------------------------------------------------------ #
 
