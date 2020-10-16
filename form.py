@@ -15,8 +15,11 @@ current_dir3 = os.path.join(directory_name, "Images", "AeroMexico Trans.png")
 current_dir4 = os.path.join(directory_name, "Images", "button_send.png")
 current_dir5 = os.path.join(directory_name, "Images", "button_save.png")
 current_dir6 = os.path.join(directory_name, "Images", "button_exit.png")
-current_dir7 = os.path.join(directory_name, "Images", "icon_save.png")
-current_dir8 = os.path.join(directory_name, "Images", "icon_send.png")
+current_dir7 = os.path.join(directory_name, "Images", "hover_send.png")
+current_dir8 = os.path.join(directory_name, "Images", "hover_save.png")
+current_dir9 = os.path.join(directory_name, "Images", "hover_exit.png")
+current_dir10 = os.path.join(directory_name, "Images", "icon_send.png")
+current_dir11 = os.path.join(directory_name, "Images", "icon_save.png")
 
 
 root = Tk()
@@ -34,7 +37,7 @@ root.columnconfigure(2, weight=1)
 root.rowconfigure(3, weight=1)
 root.columnconfigure(3, weight=1)
 root.title("AeroMexico Report")
-root.configure(background="#23395d")
+root.configure(background="#112f54")
 
 root.iconbitmap(current_dir)
 # root.iconbitmap("C:/Users/gerge/Desktop/Python/CODEMY/TKINTER/aeromexico-logo.png")
@@ -155,6 +158,24 @@ def sum_AKE(number_of_xq):
     result_AKE.set(total_AKE)
 
 # Button Functions
+def send_button_hover(e):
+    sendButton.config(image=send_button_alt)
+
+def send_button_leave(e):
+    sendButton.config(image=send_button)
+
+def save_button_hover(e):
+    saveButton.config(image=save_button_alt)
+
+def save_button_leave(e):
+    saveButton.config(image=save_button)
+
+def exit_button_hover(e):
+    exitButton.config(image=exit_button_alt)
+
+def exit_button_leave(e):
+    exitButton.config(image=exit_button)
+
 
 def send(text="Aero Mexico Report", subject="Daily Report",
                from_email="Damianos Greg <damandgreg@outlook.com>",
@@ -423,9 +444,12 @@ total_xq_in_ake = StringVar()  # here comes the total bags in AKE formula
 send_button = PhotoImage(file=f"{current_dir4}")
 save_button = PhotoImage(file=f"{current_dir5}")
 exit_button = PhotoImage(file=f"{current_dir6}")
+send_button_alt = PhotoImage(file=f"{current_dir7}")
+save_button_alt = PhotoImage(file=f"{current_dir8}")
+exit_button_alt = PhotoImage(file=f"{current_dir9}")
 
-save_icon = PhotoImage(file=f"{current_dir7}")
-send_icon = PhotoImage(file=f"{current_dir8}")
+send_icon = PhotoImage(file=f"{current_dir10}")
+save_icon = PhotoImage(file=f"{current_dir11}")
 # Lists
 container_list = []
 position_list =[]
@@ -842,6 +866,15 @@ priorityBag.trace("w", totalBulkBags)
 
 my_notebook.add(mydocument_mainframe, text="My Report")
 my_notebook.add(database_mainframe, text="Database")
+
+##########################################################
+# Animating Buttons when hovering mouse
+sendButton.bind("<Enter>", send_button_hover)
+sendButton.bind("<Leave>", send_button_leave)
+saveButton.bind("<Enter>", save_button_hover)
+saveButton.bind("<Leave>", save_button_leave)
+exitButton.bind("<Enter>", exit_button_hover)
+exitButton.bind("<Leave>", exit_button_leave)
 
 ##########################################################
 root.mainloop()
