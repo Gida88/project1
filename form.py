@@ -7,6 +7,12 @@ from tkinter import filedialog
 from tkinter import scrolledtext
 import os
 from PIL import ImageTk, Image
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+
 
 directory_name = os.path.dirname("project1")
 current_dir = os.path.join(directory_name, "Images", "AeroMexico.ico")
@@ -179,11 +185,12 @@ def exit_button_leave(e):
 
 def send(text="Aero Mexico Report", subject="Daily Report",
                from_email="Damianos Greg <damandgreg@outlook.com>",
-                to_emails=[]):
-    email_window = Toplevel()
+                to_emails=["damianos.psychos@gmail.com", "damandgreg@outlook.com"], username="damandgreg@outlook.com",
+         password="Psychos&Vida"):
+    '''email_window = Toplevel()
     email_window.title("Send My Report")
     email_window.geometry(f"+{(int(x)+200)}+{(int(y)+200)}")
-    myLabel = Label(email_window, text="Please select what email adresses you want to send your report to:")
+    myLabel = Label(email_window, text="Please select what email address(es) you want to send your report to:")
     myLabel.pack()
     email_entry = Entry(email_window, width=20)
     email_entry.pack()
@@ -198,18 +205,196 @@ def send(text="Aero Mexico Report", subject="Daily Report",
     can.pack()
     email4 = StringVar()
     gua = Checkbutton(email_window, text="Guadalajara Station", variable=email4, onvalue="Yes", offvalue="No")
-    gua.pack()
-    pass
+    gua.pack()'''
 
-
-def save():
-    directory = filedialog.asksaveasfilename(parent=root, initialfile=(flightNumber.get()) + " " + (reportType.get()) +
-                                                                      " Report.pdf")  # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
-
+    # Create the PDF in file directory so that it can be attached to the email
+    pdf_dir = os.path.join(directory_name, f"{(reportType.get())} Report - {flightNumber.get()}.pdf")
+    print(directory_name)
+    print(current_dir6)
+    print(pdf_dir)
     crew_info = crew.get()
     aircraftType_info = aircraftType.get()
     registration_info = registration.get()
-    flight_nunber_info = flightNumber.get()
+    flight_number_info = flightNumber.get()
+    route_info = route.get()
+    j_class_info = jClass.get()
+    y_class_info = yClass.get()
+
+    zoneAA_info = zoneAA.get()
+    zoneAC_info = zoneAC.get()
+    zoneAI_info = zoneAI.get()
+    zoneBA_info = zoneBA.get()
+    zoneBC_info = zoneBC.get()
+    zoneBI_info = zoneBI.get()
+    zoneCA_info = zoneCA.get()
+    zoneCC_info = zoneCC.get()
+    zoneCI_info = zoneCI.get()
+    #total_info = total.get()  # hre comes the total ob formula
+
+    lir_edno_info = lirEdno.get()
+    # Calculating the total number of bags in the Bags Entries
+    total_xq_in_ake_info = 0
+    for x in number_of_xq_list:
+        total_xq_in_ake_info += int(x.get())
+
+    container_info = registration.get()
+    position_info = registration.get()
+    nunmber_of_xq_info = registration.get()
+    type_xq_info = registration.get()
+
+    stroller_info = stroller.get()
+    wchr_info = wchr.get()
+    local_bag_info = localBag.get()
+    transfer_bag_info = transferBag.get()
+    priority_bag_info = priorityBag.get()
+    #total_bulk_bag_info = totalBulkBag.get()
+    total_bags_ob_info = totalBagsOb.get()
+    total_bag_weight_info = totalBagWeight.get()
+    captain_info = captain.get()
+    h2o_info = h2o.get()
+    flightplan_info = flightPlan.get()
+    runway_info = runway.get()
+    runway_condition_info = runwayCondition.get()
+    fuel_info = fuel.get()
+    damaged_bags_info = damagedBags.get()
+    remarks_info = remarks.get()
+
+    # PDF alignment
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=15)
+    pdf.image(current_dir2, x=9, y=9, w=50)
+    pdf.image(current_dir3, x=10, y=53, w=190)
+    pdf.cell(0, 6, txt="", ln=1, align="L")
+    pdf.ln()
+    pdf.ln()
+    pdf.cell(0, 6, txt=(reportType.get())+" Report", ln=1, align="L")
+    pdf.ln()
+    pdf.cell(35, 6, txt="Date: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=today_string, ln=1, align="L")
+    pdf.cell(35, 6, txt="Crew: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=crew_info, ln=1, align="L")
+    pdf.cell(35, 6, txt="A/C Type: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=aircraftType_info, ln=1, align="L")
+    pdf.cell(35, 6, txt="Registration: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=registration_info, ln=1, align="L")
+    pdf.cell(35, 6, txt="Flight: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=flight_number_info, ln=1, align="L")
+    pdf.cell(35, 6, txt="Route: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=route_info, ln=1, align="L")
+    pdf.ln()
+    pdf.cell(7, 5, txt="J: ", ln=0, align="L")
+    pdf.cell(20, 5, txt=str(j_class_info), ln=0, align="L")
+    pdf.cell(7, 5, txt="Y: ", ln=0, align="L")
+    pdf.cell(20, 5, txt=str(y_class_info), ln=1, align="L")
+    pdf.ln()
+    pdf.cell(20, 8, txt="AREA", ln=0, align="C")
+    pdf.cell(30, 8, txt="ADULTS", ln=0, align="C")
+    pdf.cell(30, 8, txt="CHILDREN", ln=0, align="C")
+    pdf.cell(30, 8, txt="INFANTS", ln=1, align="C")
+    pdf.line(11, 99, 117, 99)
+    pdf.cell(20, 6, txt="Zone A:", ln=0, align="L")
+    pdf.cell(30, 6, txt=str(zoneAA_info), ln=0, align="C")
+    pdf.cell(30, 6, txt=str(zoneAC_info), ln=0, align="C")
+    pdf.cell(30, 6, txt=str(zoneAI_info), ln=1, align="C")
+    pdf.cell(20, 6, txt="Zone B:", ln=0, align="L")
+    pdf.cell(30, 6, txt=str(zoneBA_info), ln=0, align="C")
+    pdf.cell(30, 6, txt=str(zoneBC_info), ln=0, align="C")
+    pdf.cell(30, 6, txt=str(zoneBI_info), ln=1, align="C")
+    pdf.cell(20, 6, txt="Zone C:", ln=0, align="L")
+    pdf.cell(30, 6, txt=str(zoneCA_info), ln=0, align="C")
+    pdf.cell(30, 6, txt=str(zoneCC_info), ln=0, align="C")
+    pdf.cell(30, 6, txt=str(zoneCI_info), ln=1, align="C")
+    pdf.ln()
+    pdf.cell(15, 6, txt="LIR: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=lir_edno_info, ln=1, align="L")
+    pdf.cell(50, 6, txt="Total Bags in AKEs: ", ln=0, align="L")
+    pdf.cell(35, 6, txt=str(total_xq_in_ake_info), ln=1, align="L")
+    pdf.ln()
+    pdf.cell(40, 8, txt="CONTAINER", ln=0, align="C")
+    pdf.cell(40, 8, txt="POSITION", ln=0, align="C")
+    pdf.cell(40, 8, txt="NO OF BAGS", ln=0, align="C")
+    pdf.cell(40, 8, txt="TYPE", ln=1, align="C")
+    pdf.line(14, 149, 158, 149)
+    for i in range(0, len(container_list)):
+        pdf.cell(40, 6, txt=(container_list[i].get()), ln=0, align="C")
+        pdf.cell(40, 6, txt=(position_list[i].get()), ln=0, align="C")
+        pdf.cell(40, 6, txt=(number_of_xq_list[i].get()), ln=0, align="C")
+        pdf.cell(40, 6, txt=(type_xq_list[i].get()), ln=1, align="C")
+    pdf.ln()
+    pdf.cell(40, 6, txt="Stroller: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=str(stroller_info), ln=1, align="L")
+    pdf.cell(40, 6, txt="WCHR: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=str(wchr_info), ln=1, align="L")
+    pdf.cell(40, 6, txt="Local Bags: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=str(local_bag_info), ln=1, align="L")
+    pdf.cell(40, 6, txt="Transfer Bags: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=str(transfer_bag_info), ln=1, align="L")
+    pdf.cell(40, 6, txt="Priority Bags: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=str(priority_bag_info), ln=1, align="L")
+    #pdf.cell(0, 5, txt = " " +"TOTAL BULK    "+str(total_bulk_bag_info)+" ", ln=1, align="L")
+    pdf.ln()
+    #pdf.cell(0, 5, txt = " " +"TOTAL BAGS OB    "+total_bags_ob_info+" ", ln=1, align="L")
+    pdf.cell(48, 6, txt="Total Bag Weight: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=total_bag_weight_info, ln=1, align="L")
+    pdf.cell(48, 6, txt="Captain: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=captain_info, ln=1, align="L")
+    pdf.cell(48, 6, txt="Water Level: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=h2o_info, ln=1, align="L")
+    pdf.cell(48, 6, txt="Flight Plan: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=flightplan_info, ln=1, align="L")
+    pdf.cell(48, 6, txt="Runway: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=f"{runway_info} {runway_condition_info}", ln=1, align="L")
+    pdf.cell(48, 6, txt="Fuel: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=fuel_info, ln=1, align="L")
+    pdf.cell(48, 6, txt="Damaged Bags: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=damaged_bags_info, ln=1, align="L")
+    pdf.cell(48, 6, txt="Remarks: ", ln=0, align="L")
+    pdf.cell(20, 6, txt=remarks_info, ln=1, align="L")
+    pdf.output(pdf_dir, "F")
+
+    # Email Part
+    msg = MIMEMultipart("alternative")
+    msg["From"] = from_email
+    msg["To"] = ", ".join(to_emails)
+    msg["Subject"] = subject
+
+    txt_part = MIMEText(text, "plain")
+    msg.attach(txt_part)
+    html_part = MIMEText("<h1>This is working</h1>", "html")
+    # msg.attach(html_part)
+
+    filename = pdf_dir
+    attachment = open(filename, 'rb')  # Open the file as binary mode
+
+    part = MIMEBase("application", "octet-stream")
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)  # encode the attachment
+    # add payload header with filename
+    part.add_header("Content-Disposition", f"attachment; filename= {filename}")
+
+    msg.attach(part)
+    msg_str = msg.as_string()
+    # login to my smtp server
+    server = smtplib.SMTP(host="smtp.office365.com", port=587)
+    server.ehlo()
+    server.starttls()
+    server.login(username, password)
+    server.sendmail(from_email, to_emails, msg_str)
+    server.quit()
+    # Delete the PDF in file directory after it is sent
+    os.remove(pdf_dir)
+
+    # Give a pop-up message that the email was sent
+    messagebox.showinfo("Report Sent!", "Your report has been sent successfully")
+
+def save():
+    directory = filedialog.asksaveasfilename(parent=root, initialfile=f"{(reportType.get())} Report - "
+                                                                      f"{flightNumber.get()} - {today_string}.pdf")  # Prompts user to choose a directory where the file will be saved and returns the path selected along with the filename
+    crew_info = crew.get()
+    aircraftType_info = aircraftType.get()
+    registration_info = registration.get()
+    flight_number_info = flightNumber.get()
     route_info = route.get()
     j_class_info = jClass.get()
     y_class_info = yClass.get()
@@ -275,7 +460,7 @@ def save():
     pdf.cell(35, 6, txt="Registration: ", ln=0, align="L")
     pdf.cell(20, 6, txt=registration_info, ln=1, align="L")
     pdf.cell(35, 6, txt="Flight: ", ln=0, align="L")
-    pdf.cell(20, 6, txt=flight_nunber_info, ln=1, align="L")
+    pdf.cell(20, 6, txt=flight_number_info, ln=1, align="L")
     pdf.cell(35, 6, txt="Route: ", ln=0, align="L")
     pdf.cell(20, 6, txt=route_info, ln=1, align="L")
     pdf.ln()
@@ -353,7 +538,7 @@ def save():
     #crew_entry.delete(0, END)
     #aircraftType_entry.delete(0, END)
     #registration_entry.delete(0, END)
-    messagebox.showinfo("Document Saved", "Your document has been saved successfully")
+    messagebox.showinfo("Document Saved!", "Your document has been saved successfully")
     #except:
     #    messagebox.showerror("ERROR", "Unexpected Error Occured!\nYour document was not saved")
 
