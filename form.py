@@ -185,6 +185,7 @@ def exit_button_leave(e):
     exitButton.config(image=exit_button)
 
 def send_options():
+    global recipient_list, checkbutton_list, email_window
     email_window = Toplevel()
     email_window.title("Send Report")
     email_window.geometry(f"+{(int(x)+200)}+{(int(y)+200)}")
@@ -216,18 +217,25 @@ def send_options():
     frame5.grid(row=1, column=2, padx=5, pady=5, sticky=NSEW, rowspan=3)
     myLabel = Label(frame1, text="Select the email address(es) you want your report sent to:")
     myLabel.grid(row=0, column=0)
-    station_list = ["Amsterdam Station", "Mexico City Station", "Cancun Station", "Guadalajara Station"]
+    #station_list = ["Amsterdam Station", "Mexico City Station", "Cancun Station", "Guadalajara Station"]
+    station_list = ["Dam & Greg", "Damianos", "Rosemary", "Dimitra"]
+    email_list = ["damandgreg@outlook.com", "damianos.psychos@gmail.com", "rosemary.kaziani@gmail.com", "dimitraKaziani@hotmail.com"]
+    recipient_list = []
     checkbutton_list = []
-    all_emails = StringVar()
-    all = Checkbutton(frame2, text="Select All Stations", variable=all_emails, command=lambda v=all_emails, b=checkbutton_list: select_all(v, b))
+    variables_list = []
+    all_emails = IntVar()
+    all = Checkbutton(frame2, text="Select All Stations", variable=all_emails, command=lambda v=all_emails, b=checkbutton_list, l=variables_list: select_all(v, b, l))
     all.deselect()
     all.grid(row=0, column=0, sticky=W)
     for i, station in enumerate(station_list):
-        selection = IntVar()
-        check = Checkbutton(frame3, text=f"{station}", variable=selection, onvalue="insert email", offvalue="")
+        selection = StringVar()
+        variables_list.append(selection)
+        check = Checkbutton(frame3, text=f"{station}", variable=selection, onvalue=f"{email_list[i]}", offvalue="")
+        check.config(command=lambda b=check, v=selection: compose_email_list(b, v))
         checkbutton_list.append(check)
         check.deselect()
         check.grid(row=i, column=0, sticky=W)
+        print(check["onvalue"])
     '''email1 = StringVar()
     ams = Checkbutton(frame3, text="Amsterdam Station", variable=email1, onvalue="insert email", offvalue="")
     ams.deselect()
@@ -250,9 +258,9 @@ def send_options():
     other = Checkbutton(frame4, text="Other", variable=email5, command=lambda v=email5, e=email_entry: other_email(v, e))
     other.deselect()
     other.grid(row=0, column=0, pady=3, sticky=W)
-    send = Button(frame5, text="Send", width=15, padx=5, pady=5)
-    send.grid(row=0, column=0, padx=5, pady=5, sticky=S)
-    cancel = Button(frame5, text="Cancel", width=15, padx=5, pady=5)
+    send_button = Button(frame5, text="Send", width=15, padx=5, pady=5, command=lambda r=recipient_list: send(r))
+    send_button.grid(row=0, column=0, padx=5, pady=5, sticky=S)
+    cancel = Button(frame5, text="Cancel", width=15, padx=5, pady=5, command=email_window.destroy)
     cancel.grid(row=1, column=0, padx=5, pady=5, sticky=N)
 
 
@@ -263,18 +271,28 @@ def other_email(var, widget):
         widget.config(state=DISABLED)
 
 
-def select_all(var, boxes):
-    if var.get() == "1":
-        for box in boxes:
+def select_all(var, boxes, vlist):
+    if var.get() == 1:
+        for n, box in enumerate(checkbutton_list):
             box.select()
+            compose_email_list(box, vlist[n])
     else:
         for box in boxes:
             box.deselect()
+            recipient_list.remove(box["onvalue"])
 
 
-def send():
+def compose_email_list(box, var):
+    if var.get():
+        recipient_list.append(var.get())
+    else:
+        recipient_list.remove(box["onvalue"])
+
+
+def send(recipients):
     from_email = "Damianos Greg <damandgreg@outlook.com>" # Will later change to user's email address taken from login
-    to_emails = ["damandgreg@outlook.com",] # Will be chosen from pop-up menu
+    to_emails = recipients # Will be chosen from pop-up menu
+    #to_emails = ["damandgreg@outlook.com",] # Will be chosen from pop-up menu
     text = f"{reportType.get()} Report\n\n{flightNumber.get()} {route.get()}\n{registration.get()}\n{today_string}"
     subject = f"{reportType.get()} Report"
     username = "damandgreg@outlook.com"
@@ -413,6 +431,7 @@ def send():
     pdf.cell(20, 6, txt=remarks_info, ln=1, align="L")
     pdf.output(pdf_dir, "F")
 
+    print(to_emails)
     # Email Part
     msg = MIMEMultipart("alternative")
     msg["From"] = from_email
@@ -444,6 +463,9 @@ def send():
     server.quit()
     # Delete the PDF in file directory after it is sent
     os.remove(pdf_dir)
+
+    # Close the dialog box
+    email_window.destroy()
 
     # Give a pop-up message that the email was sent
     messagebox.showinfo("Report Sent!", "Your report has been sent successfully")
