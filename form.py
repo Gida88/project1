@@ -12,6 +12,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+import time
+import mysql.connector
 
 
 directory_name = os.path.dirname("project1")
@@ -182,36 +184,104 @@ def exit_button_hover(e):
 def exit_button_leave(e):
     exitButton.config(image=exit_button)
 
-
-def send(text="Aero Mexico Report", subject="Daily Report",
-               from_email="Damianos Greg <damandgreg@outlook.com>",
-                to_emails=["damianos.psychos@gmail.com", "damandgreg@outlook.com"], username="damandgreg@outlook.com",
-         password="Psychos&Vida"):
-    '''email_window = Toplevel()
-    email_window.title("Send My Report")
+def send_options():
+    email_window = Toplevel()
+    email_window.title("Send Report")
     email_window.geometry(f"+{(int(x)+200)}+{(int(y)+200)}")
-    myLabel = Label(email_window, text="Please select what email address(es) you want to send your report to:")
-    myLabel.pack()
-    email_entry = Entry(email_window, width=20)
-    email_entry.pack()
-    email1 = StringVar()
-    ams = Checkbutton(email_window, text="Amsterdam Station", variable=email1, onvalue="Yes", offvalue="No")
-    ams.pack()
+    email_window.resizable(False, False)
+    email_window.rowconfigure(0, weight=1)
+    email_window.columnconfigure(0, weight=1)
+    frame1 = Frame(email_window, padx=5, pady=5)
+    frame1.rowconfigure(0, weight=1)
+    frame1.columnconfigure(0, weight=1)
+    frame2 = LabelFrame(email_window, padx=5, pady=5)
+    frame2.rowconfigure(0, weight=1)
+    frame2.columnconfigure(0, weight=1)
+    frame3 = LabelFrame(email_window, padx=5, pady=5)
+    frame3.rowconfigure(0, weight=1)
+    frame3.columnconfigure(0, weight=1)
+    frame4 = LabelFrame(email_window, padx=5, pady=5)
+    frame4.rowconfigure(0, weight=1)
+    frame4.columnconfigure(0, weight=1)
+    frame5 = LabelFrame(email_window, padx=5, pady=5)
+    frame5.rowconfigure(0, weight=1)
+    frame5.columnconfigure(0, weight=1)
+    frame5.rowconfigure(1, weight=1)
+    line = ttk.Separator(email_window, orient="vertical")
+    frame1.grid(row=0, column=0, padx=5, pady=5, sticky=EW)
+    frame2.grid(row=1, column=0, padx=5, pady=5, sticky=EW)
+    frame3.grid(row=2, column=0, padx=5, sticky=EW)
+    frame4.grid(row=3, column=0, padx=5, pady=5, sticky=EW)
+    line.grid(row=1, column=1, rowspan=3, padx=10, pady=5, sticky=NS)
+    frame5.grid(row=1, column=2, padx=5, pady=5, sticky=NSEW, rowspan=3)
+    myLabel = Label(frame1, text="Select the email address(es) you want your report sent to:")
+    myLabel.grid(row=0, column=0)
+    station_list = ["Amsterdam Station", "Mexico City Station", "Cancun Station", "Guadalajara Station"]
+    checkbutton_list = []
+    all_emails = StringVar()
+    all = Checkbutton(frame2, text="Select All Stations", variable=all_emails, command=lambda v=all_emails, b=checkbutton_list: select_all(v, b))
+    all.deselect()
+    all.grid(row=0, column=0, sticky=W)
+    for i, station in enumerate(station_list):
+        selection = IntVar()
+        check = Checkbutton(frame3, text=f"{station}", variable=selection, onvalue="insert email", offvalue="")
+        checkbutton_list.append(check)
+        check.deselect()
+        check.grid(row=i, column=0, sticky=W)
+    '''email1 = StringVar()
+    ams = Checkbutton(frame3, text="Amsterdam Station", variable=email1, onvalue="insert email", offvalue="")
+    ams.deselect()
+    ams.grid(row=0, column=0, sticky=W)
     email2 = StringVar()
-    mex = Checkbutton(email_window, text="Mexico City Station", variable=email2, onvalue="Yes", offvalue="No")
-    mex.pack()
+    mex = Checkbutton(frame3, text="Mexico City Station", variable=email2, onvalue="insert email", offvalue="")
+    mex.deselect()
+    mex.grid(row=1, column=0, sticky=W)
     email3 = StringVar()
-    can = Checkbutton(email_window, text="Cancun Station", variable=email3, onvalue="Yes", offvalue="No")
-    can.pack()
+    can = Checkbutton(frame3, text="Cancun Station", variable=email3, onvalue="insert email", offvalue="")
+    can.deselect()
+    can.grid(row=2, column=0, sticky=W)
     email4 = StringVar()
-    gua = Checkbutton(email_window, text="Guadalajara Station", variable=email4, onvalue="Yes", offvalue="No")
-    gua.pack()'''
+    gua = Checkbutton(frame3, text="Guadalajara Station", variable=email4, onvalue="insert email", offvalue="")
+    gua.deselect()
+    gua.grid(row=3, column=0, sticky=W)'''
+    email5 = StringVar()
+    email_entry = Entry(frame4, width=25, state=DISABLED)
+    email_entry.grid(row=0, column=1, sticky=W)
+    other = Checkbutton(frame4, text="Other", variable=email5, command=lambda v=email5, e=email_entry: other_email(v, e))
+    other.deselect()
+    other.grid(row=0, column=0, pady=3, sticky=W)
+    send = Button(frame5, text="Send", width=15, padx=5, pady=5)
+    send.grid(row=0, column=0, padx=5, pady=5, sticky=S)
+    cancel = Button(frame5, text="Cancel", width=15, padx=5, pady=5)
+    cancel.grid(row=1, column=0, padx=5, pady=5, sticky=N)
+
+
+def other_email(var, widget):
+    if var.get() == "1":
+        widget.config(state=NORMAL)
+    else:
+        widget.config(state=DISABLED)
+
+
+def select_all(var, boxes):
+    if var.get() == "1":
+        for box in boxes:
+            box.select()
+    else:
+        for box in boxes:
+            box.deselect()
+
+
+def send():
+    from_email = "Damianos Greg <damandgreg@outlook.com>" # Will later change to user's email address taken from login
+    to_emails = ["damandgreg@outlook.com",] # Will be chosen from pop-up menu
+    text = f"{reportType.get()} Report\n\n{flightNumber.get()} {route.get()}\n{registration.get()}\n{today_string}"
+    subject = f"{reportType.get()} Report"
+    username = "damandgreg@outlook.com"
+    password = "Psychos&Vida"
 
     # Create the PDF in file directory so that it can be attached to the email
-    pdf_dir = os.path.join(directory_name, f"{(reportType.get())} Report - {flightNumber.get()}.pdf")
-    print(directory_name)
-    print(current_dir6)
-    print(pdf_dir)
+    pdf_dir = os.path.join(directory_name, f"{(reportType.get())} Report - {flightNumber.get()} - {today_string}.pdf")
     crew_info = crew.get()
     aircraftType_info = aircraftType.get()
     registration_info = registration.get()
@@ -236,19 +306,11 @@ def send(text="Aero Mexico Report", subject="Daily Report",
     total_xq_in_ake_info = 0
     for x in number_of_xq_list:
         total_xq_in_ake_info += int(x.get())
-
-    container_info = registration.get()
-    position_info = registration.get()
-    nunmber_of_xq_info = registration.get()
-    type_xq_info = registration.get()
-
     stroller_info = stroller.get()
     wchr_info = wchr.get()
     local_bag_info = localBag.get()
     transfer_bag_info = transferBag.get()
     priority_bag_info = priorityBag.get()
-    #total_bulk_bag_info = totalBulkBag.get()
-    total_bags_ob_info = totalBagsOb.get()
     total_bag_weight_info = totalBagWeight.get()
     captain_info = captain.get()
     h2o_info = h2o.get()
@@ -332,9 +394,7 @@ def send(text="Aero Mexico Report", subject="Daily Report",
     pdf.cell(20, 6, txt=str(transfer_bag_info), ln=1, align="L")
     pdf.cell(40, 6, txt="Priority Bags: ", ln=0, align="L")
     pdf.cell(20, 6, txt=str(priority_bag_info), ln=1, align="L")
-    #pdf.cell(0, 5, txt = " " +"TOTAL BULK    "+str(total_bulk_bag_info)+" ", ln=1, align="L")
     pdf.ln()
-    #pdf.cell(0, 5, txt = " " +"TOTAL BAGS OB    "+total_bags_ob_info+" ", ln=1, align="L")
     pdf.cell(48, 6, txt="Total Bag Weight: ", ln=0, align="L")
     pdf.cell(20, 6, txt=total_bag_weight_info, ln=1, align="L")
     pdf.cell(48, 6, txt="Captain: ", ln=0, align="L")
@@ -548,7 +608,7 @@ def save():
 
 today = date.today()
 #today_string = today.strftime("%Y/%m/%d")
-today_string = today.strftime("%d/%m/%Y")
+today_string = today.strftime("%d-%m-%Y")
 
 reg = root.register(only_numbers)
 
@@ -811,7 +871,7 @@ saveButton = Button(buttons_frame, command=save, image=save_button, borderwidth=
 exitButton = Button(buttons_frame, command=root.quit, image=exit_button, borderwidth=0)
 
 saveIcon = Button(test_frame, command=save, image=save_icon, borderwidth=0)
-sendIcon = Button(test_frame, command=send, image=send_icon, borderwidth=0)
+sendIcon = Button(test_frame, command=send_options, image=send_icon, borderwidth=0)
 
 # ------------------------------------------------------------------------------ #
 
