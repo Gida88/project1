@@ -6,7 +6,7 @@ def login_screen():
 
     root = Tk()
     root.title("User Login")
-    app_width = 280
+    app_width = 290
     app_height = 100
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -34,6 +34,13 @@ def login_screen():
         else:
             messagebox.showinfo("Login Failed", "Username and/or Password Incorrect")
 
+
+    def show_password():
+        if selection.get() == 0:
+            e_pass.config(show="*")
+        else:
+            e_pass.config(show="")
+
     l_user = Label(root, text="Username:")
     l_pass = Label(root, text="Password:")
     l_user.grid(row=0, column=0)
@@ -49,6 +56,10 @@ def login_screen():
 
     b_login = Button(root, text="Login", width=10, command=login)
     b_login.grid(row=2, column=0, columnspan=2, pady=5)
+
+    selection = IntVar()
+    c_password = Checkbutton(root, variable=selection, command=show_password)
+    c_password.grid(row=1, column=2)
 
     root.bind("<Return>", login)
 
