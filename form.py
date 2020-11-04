@@ -14,6 +14,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 import time
 import mysql.connector
+from login import login_screen
 
 
 directory_name = os.path.dirname("project1")
@@ -29,6 +30,8 @@ current_dir9 = os.path.join(directory_name, "Images", "hover_exit.png")
 current_dir10 = os.path.join(directory_name, "Images", "icon_send.png")
 current_dir11 = os.path.join(directory_name, "Images", "icon_save.png")
 
+email = login_screen()
+print(email)
 
 root = Tk()
 app_width = 1110
@@ -461,6 +464,7 @@ def send(recipients):
     server.login(username, password)
     server.sendmail(from_email, to_emails, msg_str)
     server.quit()
+
     # Delete the PDF in file directory after it is sent
     os.remove(pdf_dir)
 
