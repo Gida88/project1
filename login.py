@@ -50,7 +50,7 @@ def login_screen():
     password = StringVar()
 
     e_user = Entry(root, width=20, textvariable=username)
-    e_pass = Entry(root, width=20, textvariable=password)
+    e_pass = Entry(root, width=20, textvariable=password, show="*")
     e_user.grid(row=0, column=1, pady=5)
     e_pass.grid(row=1, column=1)
 
@@ -59,6 +59,7 @@ def login_screen():
 
     selection = IntVar()
     c_password = Checkbutton(root, variable=selection, command=show_password)
+    c_password.deselect()
     c_password.grid(row=1, column=2)
 
     root.bind("<Return>", login)
