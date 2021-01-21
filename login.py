@@ -2,9 +2,16 @@ from tkinter import *
 import mysql.connector
 from tkinter import messagebox
 import smtplib
+import os
 
 global username, password, root, root2, root3, domain, e_username, e_password
 
+proj_dir = os.path.dirname("project1")
+
+gmail_img = os.path.join(proj_dir, "Images", "Gmail-logo.png")
+hotmail_img = os.path.join(proj_dir, "Images", "Hotmail-logo.png")
+exchange_img = os.path.join(proj_dir, "Images", "Exchange-logo.png")
+yahoo_img = os.path.join(proj_dir, "Images", "Yahoo-logo.png")
 
 def login_screen():
     global username, password, root
@@ -69,7 +76,7 @@ def login(event=None):
             root2 = Tk()
             root2.title("Link Email Account")
             app_width = 400
-            app_height = 220
+            app_height = 300
             screen_width = root2.winfo_screenwidth()
             screen_height = root2.winfo_screenheight()
             x = (screen_width / 2) - (app_width / 2)
@@ -78,16 +85,23 @@ def login(event=None):
             root2.rowconfigure(0, weight=1)
             root2.columnconfigure(0, weight=1)
             root2.rowconfigure(1, weight=1)
-            root2.columnconfigure(1, weight=1)
+            root2.rowconfigure(2, weight=1)
+            root2.rowconfigure(3, weight=1)
 
-            b_gmail = Button(root2, text="Gmail", width=20, height=5, command=lambda d="smtp.gmail.com", n="Gmail": select_domain(d, n))
+            gmail_icon = PhotoImage(file=f"{gmail_img}")
+            exchange_icon = PhotoImage(file=f"{exchange_img}")
+            hotmail_icon = PhotoImage(file=f"{hotmail_img}")
+            yahoo_icon = PhotoImage(file=f"{yahoo_img}")
+
+            b_gmail = Button(root2, image=gmail_icon, borderwidth=0, command=lambda d="smtp.gmail.com", n="Gmail": select_domain(d, n))
+            b_gmail.config(borderwidth=0)
             b_gmail.grid(row=0, column=0, padx=5, pady=5)
-            b_exchange = Button(root2, text="Exchange", width=20, height=5, command=lambda d="smtp.office365.com", n="Exchange": select_domain(d, n))
+            b_exchange = Button(root2, image=exchange_icon, borderwidth=0, command=lambda d="smtp.office365.com", n="Exchange": select_domain(d, n))
             b_exchange.grid(row=1, column=0, padx=5, pady=5)
-            b_hotmail = Button(root2, text="Hotmail", width=20, height=5, command=lambda d="smtp.live.com", n="Hotmail": select_domain(d, n))
-            b_hotmail.grid(row=0, column=1, padx=5, pady=5)
-            b_yahoo = Button(root2, text="Yahoo", width=20, height=5, command=lambda d="smtp.yahoo.com", n="Yahoo": select_domain(d, n))
-            b_yahoo.grid(row=1, column=1, padx=5, pady=5)
+            b_hotmail = Button(root2, image=hotmail_icon, borderwidth=0, command=lambda d="smtp.live.com", n="Hotmail": select_domain(d, n))
+            b_hotmail.grid(row=2, column=0, padx=5, pady=5)
+            b_yahoo = Button(root2, image=yahoo_icon, command=lambda d="smtp.yahoo.com", n="Yahoo": select_domain(d, n))
+            b_yahoo.grid(row=3, column=0, padx=5, pady=5)
             root2.mainloop()
     else:
         messagebox.showinfo("Login Failed", "Username and/or Password Incorrect")
@@ -120,7 +134,7 @@ def e_login(event=None):
         root2.destroy()
         # have to correct this
         #root3.destroy()
-    except:
+    except smtplib.SMTPAuthenticationError:
         messagebox.showinfo("Login Failed", "Username and/or Password Incorrect")
 
 
